@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { saveAuth } from "../auth";
 
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+
 export default function SignUp() {
   const [mode, setMode] = useState("login");
   const [form, setForm] = useState({
@@ -20,13 +23,17 @@ export default function SignUp() {
 
     const endpoint =
       mode === "login"
-        ? '${import.meta.env.VITE_API_BASE_URL}/auth/login'
-        : '${import.meta.env.VITE_API_BASE_URL}/auth/register';
+        ? `${API_BASE}/api/auth/login`
+        : `${API_BASE}/api/auth/register`;
 
     const payload =
       mode === "login"
         ? { email: form.email, password: form.password }
-        : form;
+        : {
+            username: form.username,
+            email: form.email,
+            password: form.password,
+          };
 
     try {
       const res = await fetch(endpoint, {
@@ -40,7 +47,7 @@ export default function SignUp() {
       const data = await res.json();
 
       if (!res.ok) {
-        setMessage(data.error || "Request failed");
+        setMessage(data.error || data.message || "Request failed");
         return;
       }
 
@@ -79,12 +86,14 @@ export default function SignUp() {
 
         <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
           <button
+            type="button"
             onClick={() => setMode("login")}
             style={mode === "login" ? activeTab : tab}
           >
             Log In
           </button>
           <button
+            type="button"
             onClick={() => setMode("signup")}
             style={mode === "signup" ? activeTab : tab}
           >
