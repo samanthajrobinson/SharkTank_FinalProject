@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { authHeaders } from "../auth";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Closet() {
   const [clothes, setClothes] = useState([]);
@@ -26,7 +27,7 @@ export default function Closet() {
       setErrorMessage("");
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/clothes`,
+        `${API_BASE}/api/clothes`,
         { headers: authHeaders() },
       );
 
@@ -79,7 +80,7 @@ export default function Closet() {
       data.append("image", form.image);
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/clothes`,
+        `${API_BASE}/api/clothes`,
         {
           method: "POST",
           headers: authHeaders(),
@@ -137,7 +138,7 @@ export default function Closet() {
       setErrorMessage("");
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/clothes/${id}`,
+        `${API_BASE}/api/clothes/${id}`,
         {
           method: "PATCH",
           headers: {
