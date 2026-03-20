@@ -5,26 +5,6 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-async function ensureDefaultUser() {
-  const existing = await User.findOne({ email: "test@email.com" });
-
-  if (!existing) {
-    const hashed = await bcrypt.hash("pw", 10);
-
-    await User.create({
-      username: "default",
-      email: "test@email.com",
-      password: hashed,
-    });
-
-    console.log("Created default user: test@email.com / pw");
-  }
-}
-
-ensureDefaultUser().catch((err) =>
-  console.error("Failed creating default user:", err),
-);
-
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -50,9 +30,10 @@ router.post("/register", async (req, res) => {
     const token = jwt.sign(
       { id: user._id, username: user.username, email: user.email },
       process.env.JWT_SECRET,
+      { expiresIn: "7d" },
     );
 
-    res.json({
+    return res.json({
       token,
       user: {
         id: user._id,
@@ -61,13 +42,18 @@ router.post("/register", async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ error: "Registration failed" });
+    console.error("REGISTER ERROR:", error);
+    return res.status(500).json({ error: "Registration failed" });
   }
 });
 
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
 
     const user = await User.findOne({ email });
 
@@ -84,9 +70,10 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user._id, username: user.username, email: user.email },
       process.env.JWT_SECRET,
+      { expiresIn: "7d" },
     );
 
-    res.json({
+    return res.json({
       token,
       user: {
         id: user._id,
@@ -95,7 +82,8 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ error: "Login failed" });
+    console.error("LOGIN ERROR:", error);
+    return res.status(500).json({ error: "Login failed" });
   }
 });
 
