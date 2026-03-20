@@ -3,9 +3,6 @@ import { authHeaders, getUser } from "../auth";
 
 export default function Generator() {
   const user = getUser();
-  const FAVORITES_KEY = user
-    ? `fitmatch_favorite_outfits_${user.id}`
-    : "fitmatch_favorite_outfits_guest";
 
   const [outfits, setOutfits] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,13 +10,11 @@ export default function Generator() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    loadFavoriteIds();
     generateMultipleOutfits();
   }, []);
 
   function loadFavoriteIds() {
     try {
-      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
       const ids = saved
         .map((outfit) => getOutfitSignature(outfit))
         .filter(Boolean);
@@ -84,36 +79,46 @@ export default function Generator() {
     return favoriteIds.includes(getOutfitSignature(outfit));
   }
 
-  function toggleFavorite(outfit) {
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+
+  async function saveFavoriteToDB(outfit) {
+    const res = await fetch(`${API_BASE}/api/outfits/favorite`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders(),
+      },
+      body: JSON.stringify({
+        top: outfit.top,
+        bottom: outfit.bottom,
+        shoes: outfit.shoes,
+        name: "",
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to save favorite");
+    }
+
+    return data;
+  }
+
+  async function toggleFavorite(outfit) {
     try {
-      const existing = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
       const signature = getOutfitSignature(outfit);
 
-      const alreadySaved = existing.some(
-        (savedOutfit) => getOutfitSignature(savedOutfit) === signature,
-      );
-
-      let updated;
-
-      if (alreadySaved) {
-        updated = existing.filter(
-          (savedOutfit) => getOutfitSignature(savedOutfit) !== signature,
-        );
-      } else {
-        updated = [
-          ...existing,
-          {
-            ...outfit,
-            favoriteId: signature,
-            savedAt: new Date().toISOString(),
-          },
-        ];
+      if (favoriteIds.includes(signature)) {
+        // optional: you can add delete later
+        return;
       }
 
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
-      loadFavoriteIds();
+      await saveFavoriteToDB(outfit);
+
+      setFavoriteIds((prev) => [...prev, signature]);
     } catch (error) {
-      console.error("Failed to update favorites:", error);
+      console.error("Failed to save favorite:", error);
     }
   }
 
