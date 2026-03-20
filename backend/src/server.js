@@ -12,11 +12,17 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PATCH", "DELETE"],
-  credentials: true
-}));app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // local dev
+      "https://shark-tank-final-project.vercel.app", // your frontend
+    ],
+    credentials: true,
+  }),
+);
+
+app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI).then(()=>console.log("DB connected"));
 
