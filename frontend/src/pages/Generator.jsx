@@ -36,7 +36,7 @@ export default function Generator() {
 
     try {
       const res = await fetch(
-        '${import.meta.env.VITE_API_BASE_URL}/outfits/generate-multiple',
+        `${import.meta.env.VITE_API_BASE_URL}/api/outfits/generate-multiple`,
         {
           method: "GET",
           headers: {
