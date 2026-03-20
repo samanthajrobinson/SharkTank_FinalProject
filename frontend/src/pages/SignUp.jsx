@@ -20,8 +20,8 @@ export default function SignUp() {
 
     const endpoint =
       mode === "login"
-        ? "http://localhost:5001/api/auth/login"
-        : "http://localhost:5001/api/auth/register";
+        ? '${import.meta.env.VITE_API_BASE_URL}/auth/login'
+        : '${import.meta.env.VITE_API_BASE_URL}/auth/register';
 
     const payload =
       mode === "login"

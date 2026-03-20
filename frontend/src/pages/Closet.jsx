@@ -25,7 +25,7 @@ export default function Closet() {
     try {
       setErrorMessage("");
 
-      const res = await fetch("http://localhost:5001/api/clothes", {
+      const res = await fetch('${import.meta.env.VITE_API_BASE_URL}/clothes', {
         headers: authHeaders(),
       });
 
@@ -77,7 +77,7 @@ export default function Closet() {
 
       data.append("image", form.image);
 
-      const res = await fetch("http://localhost:5001/api/clothes", {
+      const res = await fetch('${import.meta.env.VITE_API_BASE_URL}/clothes', {
         method: "POST",
         headers: authHeaders(),
         body: data,
@@ -132,7 +132,7 @@ export default function Closet() {
     try {
       setErrorMessage("");
 
-      const res = await fetch(`http://localhost:5001/api/clothes/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/clothes/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
