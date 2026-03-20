@@ -24,8 +24,11 @@ app.use(
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI).then(()=>console.log("DB connected"));
-
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB error:", err));
+  
 app.use("/api/auth", authRoutes);
 app.use("/api/clothes", clothesRoutes);
 app.use("/api/outfits", outfitRoutes);
