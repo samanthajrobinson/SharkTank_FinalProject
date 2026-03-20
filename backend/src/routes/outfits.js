@@ -46,19 +46,62 @@ router.post("/favorite", protect, async (req, res) => {
       });
     }
 
-    const outfit = await Outfit.create({
-      userId: req.user.id,
-      top,
-      bottom,
-      shoes,
-      name: name || "",
-      favorite: true,
-    });
+    const topId = top._id || top.id || top.name || "top";
+    const bottomId = bottom._id || bottom.id || bottom.name || "bottom";
+    const shoesId = shoes._id || shoes.id || shoes.name || "shoes";
+
+    const signature = `${req.user.id}-${topId}-${bottomId}-${shoesId}`;
+
+    const outfit = await Outfit.findOneAndUpdate(
+      { userId: req.user.id, signature },
+      {
+        userId: req.user.id,
+        top,
+        bottom,
+        shoes,
+        name: name || "",
+        favorite: true,
+        signature,
+      },
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true,
+      }
+    );
 
     return res.json(outfit);
   } catch (error) {
     console.error("SAVE FAVORITE OUTFIT ERROR:", error);
     return res.status(500).json({ error: "Failed to save favorite outfit" });
+  }
+});
+
+router.post("/unfavorite", protect, async (req, res) => {
+  try {
+    const { top, bottom, shoes } = req.body;
+
+    if (!top || !bottom || !shoes) {
+      return res.status(400).json({
+        error: "Top, bottom, and shoes are required",
+      });
+    }
+
+    const topId = top._id || top.id || top.name || "top";
+    const bottomId = bottom._id || bottom.id || bottom.name || "bottom";
+    const shoesId = shoes._id || shoes.id || shoes.name || "shoes";
+
+    const signature = `${req.user.id}-${topId}-${bottomId}-${shoesId}`;
+
+    await Outfit.findOneAndDelete({
+      userId: req.user.id,
+      signature,
+    });
+
+    return res.json({ message: "Outfit removed from favorites" });
+  } catch (error) {
+    console.error("UNFAVORITE OUTFIT ERROR:", error);
+    return res.status(500).json({ error: "Failed to unfavorite outfit" });
   }
 });
 
