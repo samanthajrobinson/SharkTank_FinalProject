@@ -29,23 +29,10 @@ router.post("/generate", protect, async (req, res) => {
       shoes: shoes[Math.floor(Math.random() * shoes.length)],
     };
 
-    res.json(outfit);
+    return res.json(outfit);
   } catch (error) {
     console.error("GENERATE OUTFIT ERROR:", error);
-    res.status(500).json({ error: "Failed to generate outfit" });
-  }
-});
-
-router.get("/favorites/all", async (req, res) => {
-  try {
-    const outfits = await Outfit.find({ favorite: true })
-      .populate("userId", "username email")
-      .sort({ createdAt: -1 });
-
-    res.json(outfits);
-  } catch (error) {
-    console.error("GET ALL FAVORITES ERROR:", error);
-    res.status(500).json({ error: "Failed to load favorite outfits" });
+    return res.status(500).json({ error: "Failed to generate outfit" });
   }
 });
 
@@ -65,7 +52,7 @@ router.get("/generate-multiple", protect, async (req, res) => {
 
     const count = Math.min(
       4,
-      Math.max(tops.length, bottoms.length, shoes.length),
+      Math.max(tops.length, bottoms.length, shoes.length)
     );
 
     const outfits = [];
@@ -78,10 +65,23 @@ router.get("/generate-multiple", protect, async (req, res) => {
       });
     }
 
-    res.json(outfits);
+    return res.json(outfits);
   } catch (error) {
     console.error("GENERATE MULTIPLE OUTFITS ERROR:", error);
-    res.status(500).json({ error: "Failed to generate outfits" });
+    return res.status(500).json({ error: "Failed to generate outfits" });
+  }
+});
+
+router.get("/favorites/all", async (req, res) => {
+  try {
+    const outfits = await Outfit.find({ favorite: true })
+      .populate("userId", "username email")
+      .sort({ createdAt: -1 });
+
+    return res.json(outfits);
+  } catch (error) {
+    console.error("GET ALL FAVORITES ERROR:", error);
+    return res.status(500).json({ error: "Failed to load favorite outfits" });
   }
 });
 

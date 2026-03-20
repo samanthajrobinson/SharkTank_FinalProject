@@ -1,23 +1,16 @@
 import mongoose from "mongoose";
 
-const clothingSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const outfitSchema = new mongoose.Schema(
+  {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    top: { type: Object, required: true },
+    bottom: { type: Object, required: true },
+    shoes: { type: Object, required: true },
+    favorite: { type: Boolean, default: false },
+    name: { type: String, default: "" },
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
-export default mongoose.model("Clothing", clothingSchema);
+export default mongoose.models.Outfit ||
+  mongoose.model("Outfit", outfitSchema);

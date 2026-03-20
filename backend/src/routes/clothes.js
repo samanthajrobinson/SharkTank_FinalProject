@@ -5,13 +5,12 @@ import fs from "fs/promises";
 import path from "path";
 import { execFile } from "child_process";
 import { promisify } from "util";
-const REMBG_PATH = "/Users/samantha/Library/Python/3.9/bin/rembg";
 
 import Clothing from "../models/Clothing.js";
 import { protect } from "../middleware/authMiddleware.js";
 
-const execFileAsync = promisify(execFile);
 const router = express.Router();
+const execFileAsync = promisify(execFile);
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -54,22 +53,14 @@ router.post("/", protect, upload.single("image"), async (req, res) => {
         inputPath,
         outputPath,
       ]);
+
       processedBuffer = await fs.readFile(outputPath);
-      console.log("Background removal succeeded with rembg");
-    } catch (err) {
-      console.error("rembg failed, using original normalized image:");
-      console.error(err);
+      console.log("Background removal succeeded");
+    } catch (error) {
+      console.error("Background removal failed, using original image:", error);
     }
 
-    const sizeMap = {
-      top: 650,
-      bottom: 600,
-      shoes: 500,
-    };
-
-    const targetSize = sizeMap[req.body.type] || 600;
-
-    const resized = await sharp(normalized)
+    const resized = await sharp(processedBuffer)
       .trim()
       .ensureAlpha()
       .resize({
@@ -102,26 +93,29 @@ router.post("/", protect, upload.single("image"), async (req, res) => {
       image: `data:image/webp;base64,${base64}`,
     });
 
-    res.json(item);
+    return res.json(item);
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
-    res.status(500).json({
+    return res.status(500).json({
       error: "Failed to upload clothing item",
       details: error.message,
     });
   } finally {
-    if (inputPath) await fs.unlink(inputPath).catch(() => { });
-    if (outputPath) await fs.unlink(outputPath).catch(() => { });
+    if (inputPath) await fs.unlink(inputPath).catch(() => {});
+    if (outputPath) await fs.unlink(outputPath).catch(() => {});
   }
 });
 
 router.get("/", protect, async (req, res) => {
   try {
-    const items = await Clothing.find({ userId: req.user.id });
-    res.json(items);
+    const items = await Clothing.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
+
+    return res.json(items);
   } catch (error) {
     console.error("LOAD CLOTHES ERROR:", error);
-    res.status(500).json({ error: "Failed to load clothing items" });
+    return res.status(500).json({ error: "Failed to load clothing items" });
   }
 });
 
@@ -129,7 +123,10 @@ router.patch("/:id", protect, async (req, res) => {
   try {
     const updated = await Clothing.findOneAndUpdate(
       { _id: req.params.id, userId: req.user.id },
-      req.body,
+      {
+        name: req.body.name,
+        type: req.body.type,
+      },
       { new: true }
     );
 
@@ -137,10 +134,10 @@ router.patch("/:id", protect, async (req, res) => {
       return res.status(404).json({ error: "Item not found" });
     }
 
-    res.json(updated);
+    return res.json(updated);
   } catch (error) {
     console.error("PATCH ERROR:", error);
-    res.status(500).json({ error: "Failed to update item" });
+    return res.status(500).json({ error: "Failed to update item" });
   }
 });
 
@@ -155,10 +152,10 @@ router.delete("/:id", protect, async (req, res) => {
       return res.status(404).json({ error: "Item not found" });
     }
 
-    res.json({ message: "Deleted" });
+    return res.json({ message: "Deleted" });
   } catch (error) {
     console.error("DELETE ERROR:", error);
-    res.status(500).json({ error: "Failed to delete item" });
+    return res.status(500).json({ error: "Failed to delete item" });
   }
 });
 
