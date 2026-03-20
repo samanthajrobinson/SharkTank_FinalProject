@@ -1,5 +1,6 @@
 import express from "express";
 import Clothing from "../models/Clothing.js";
+import Outfit from "../models/Outfit.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -30,7 +31,21 @@ router.post("/generate", protect, async (req, res) => {
 
     res.json(outfit);
   } catch (error) {
+    console.error("GENERATE OUTFIT ERROR:", error);
     res.status(500).json({ error: "Failed to generate outfit" });
+  }
+});
+
+router.get("/favorites/all", async (req, res) => {
+  try {
+    const outfits = await Outfit.find({ favorite: true })
+      .populate("userId", "username email")
+      .sort({ createdAt: -1 });
+
+    res.json(outfits);
+  } catch (error) {
+    console.error("GET ALL FAVORITES ERROR:", error);
+    res.status(500).json({ error: "Failed to load favorite outfits" });
   }
 });
 
@@ -65,6 +80,7 @@ router.get("/generate-multiple", protect, async (req, res) => {
 
     res.json(outfits);
   } catch (error) {
+    console.error("GENERATE MULTIPLE OUTFITS ERROR:", error);
     res.status(500).json({ error: "Failed to generate outfits" });
   }
 });

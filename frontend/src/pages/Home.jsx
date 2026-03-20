@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from "react";
 
-import { getUser } from "../auth";
-
-const user = getUser();
-const FAVORITES_KEY = user
-  ? `fitmatch_favorite_outfits_${user.id}`
-  : "fitmatch_favorite_outfits_guest";
-  
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Home() {
   const [favoriteOutfits, setFavoriteOutfits] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     loadFavorites();
   }, []);
 
-  function loadFavorites() {
+  async function loadFavorites() {
     try {
-      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
-      setFavoriteOutfits(saved);
+      setMessage("");
+
+      const res = await fetch(`${API_BASE}/api/outfits/favorites/all`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.error || "Failed to load favorite outfits.");
+        setFavoriteOutfits([]);
+        return;
+      }
+
+      setFavoriteOutfits(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to load favorite outfits:", error);
+      setMessage("Failed to load favorite outfits.");
       setFavoriteOutfits([]);
     }
   }
@@ -63,8 +70,8 @@ export default function Home() {
               lineHeight: 1.6,
             }}
           >
-            Welcome to your digital closet. Browse your wardrobe, generate outfit
-            ideas, and save your favorite looks in one place.
+            Browse community favorite outfits from all users and get inspired by
+            saved looks across FitMatch.
           </p>
         </div>
 
@@ -94,7 +101,7 @@ export default function Home() {
                   color: "#1f1f1f",
                 }}
               >
-                Favorite Outfits
+                Community Favorites
               </h2>
 
               <p
@@ -105,7 +112,7 @@ export default function Home() {
                   fontSize: "1rem",
                 }}
               >
-                Your saved looks appear here.
+                Favorited outfits from all users.
               </p>
             </div>
 
@@ -120,6 +127,20 @@ export default function Home() {
             </span>
           </div>
 
+          {message ? (
+            <div
+              style={{
+                background: "#fbeaea",
+                color: "#9f2d2d",
+                borderRadius: "16px",
+                padding: "14px 16px",
+                marginBottom: "20px",
+              }}
+            >
+              {message}
+            </div>
+          ) : null}
+
           {favoriteOutfits.length === 0 ? (
             <div
               style={{
@@ -130,7 +151,7 @@ export default function Home() {
                 color: "#777",
               }}
             >
-              No favorite outfits yet. Go to the Generator page and save some looks.
+              No favorite outfits yet.
             </div>
           ) : (
             <div
@@ -142,7 +163,7 @@ export default function Home() {
             >
               {favoriteOutfits.map((outfit, index) => (
                 <FavoriteOutfitCard
-                  key={outfit.favoriteId || outfit.id || index}
+                  key={outfit._id || index}
                   outfit={outfit}
                   index={index}
                 />
@@ -164,15 +185,35 @@ function FavoriteOutfitCard({ outfit, index }) {
         padding: "20px",
       }}
     >
-      <h3
+      <div
         style={{
-          margin: "0 0 16px 0",
-          fontSize: "1.6rem",
-          color: "#1f1f1f",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "12px",
+          marginBottom: "16px",
+          flexWrap: "wrap",
         }}
       >
-        Saved Look {index + 1}
-      </h3>
+        <h3
+          style={{
+            margin: 0,
+            fontSize: "1.6rem",
+            color: "#1f1f1f",
+          }}
+        >
+          {outfit.name || `Saved Look ${index + 1}`}
+        </h3>
+
+        <span
+          style={{
+            color: "#777",
+            fontSize: "0.95rem",
+          }}
+        >
+          By {outfit.userId?.username || "Unknown user"}
+        </span>
+      </div>
 
       <div
         style={{
