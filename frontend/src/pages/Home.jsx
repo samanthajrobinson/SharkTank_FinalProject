@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Home() {
   const [favoriteOutfits, setFavoriteOutfits] = useState([]);
@@ -16,11 +15,19 @@ export default function Home() {
       setMessage("");
 
       const res = await fetch(`${API_BASE}/api/outfits/favorites/all`);
-      const data = await res.json();
+      const text = await res.text();
+
+      let data = null;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = null;
+      }
 
       if (!res.ok) {
-        setMessage(data.error || "Failed to load favorite outfits.");
+        setMessage(data?.error || "Failed to load favorite outfits.");
         setFavoriteOutfits([]);
+        console.error("Favorites route failed:", res.status, text);
         return;
       }
 
