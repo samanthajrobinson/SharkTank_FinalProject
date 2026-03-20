@@ -25,9 +25,10 @@ export default function Closet() {
     try {
       setErrorMessage("");
 
-      const res = await fetch('${import.meta.env.VITE_API_BASE_URL}/clothes', {
-        headers: authHeaders(),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/clothes`,
+        { headers: authHeaders() },
+      );
 
       const data = await res.json();
 
@@ -77,11 +78,14 @@ export default function Closet() {
 
       data.append("image", form.image);
 
-      const res = await fetch('${import.meta.env.VITE_API_BASE_URL}/clothes', {
-        method: "POST",
-        headers: authHeaders(),
-        body: data,
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/clothes`,
+        {
+          method: "POST",
+          headers: authHeaders(),
+          body: data,
+        },
+      );
 
       console.log("response arrived", res.status);
 
@@ -132,14 +136,17 @@ export default function Closet() {
     try {
       setErrorMessage("");
 
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/clothes/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          ...authHeaders(),
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/clothes/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            ...authHeaders(),
+          },
+          body: JSON.stringify(editForm),
         },
-        body: JSON.stringify(editForm),
-      });
+      );
 
       const updatedItem = await res.json();
 
