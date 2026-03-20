@@ -36,6 +36,45 @@ router.post("/generate", protect, async (req, res) => {
   }
 });
 
+router.post("/favorite", protect, async (req, res) => {
+  try {
+    const { top, bottom, shoes, name } = req.body;
+
+    if (!top || !bottom || !shoes) {
+      return res.status(400).json({
+        error: "Top, bottom, and shoes are required",
+      });
+    }
+
+    const outfit = await Outfit.create({
+      userId: req.user.id,
+      top,
+      bottom,
+      shoes,
+      name: name || "",
+      favorite: true,
+    });
+
+    return res.json(outfit);
+  } catch (error) {
+    console.error("SAVE FAVORITE OUTFIT ERROR:", error);
+    return res.status(500).json({ error: "Failed to save favorite outfit" });
+  }
+});
+
+router.get("/mine", protect, async (req, res) => {
+  try {
+    const outfits = await Outfit.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
+
+    return res.json(outfits);
+  } catch (error) {
+    console.error("GET MY OUTFITS ERROR:", error);
+    return res.status(500).json({ error: "Failed to load your outfits" });
+  }
+});
+
 router.get("/generate-multiple", protect, async (req, res) => {
   try {
     const clothes = await Clothing.find({ userId: req.user.id });
