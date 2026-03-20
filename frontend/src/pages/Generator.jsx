@@ -1,128 +1,54 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { authHeaders, getUser } from "../auth";
+import React, { useEffect, useState } from "react";
 
-export default function Generator() {
-  const user = getUser();
+import { getUser } from "../auth";
 
-  const [outfits, setOutfits] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [favoriteIds, setFavoriteIds] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+const user = getUser();
+const FAVORITES_KEY = user
+  ? `fitmatch_favorite_outfits_${user.id}`
+  : "fitmatch_favorite_outfits_guest";
+
+export default function Profile() {
+  const [favoriteOutfits, setFavoriteOutfits] = useState([]);
 
   useEffect(() => {
-    generateMultipleOutfits();
+    loadFavorites();
   }, []);
 
-  function loadFavoriteIds() {
+  function loadFavorites() {
     try {
-      const ids = saved
-        .map((outfit) => getOutfitSignature(outfit))
-        .filter(Boolean);
-      setFavoriteIds(ids);
+      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+      setFavoriteOutfits(saved);
     } catch (error) {
-      console.error("Failed to load favorites:", error);
-      setFavoriteIds([]);
-    }
-  }
-
-  async function generateMultipleOutfits() {
-    setLoading(true);
-    setErrorMessage("");
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/outfits/generate-multiple`,
-        {
-          method: "GET",
-          headers: {
-            ...authHeaders(),
-          },
-        },
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setOutfits([]);
-        setErrorMessage(
-          data.error ||
-            "No outfits could be generated yet. Make sure you have at least one top, one bottom, and one pair of shoes.",
-        );
-        return;
-      }
-
-      setOutfits(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error(err);
-      setOutfits([]);
-      setErrorMessage("Failed to generate outfits.");
-    } finally {
-      setLoading(false);
+      console.error("Failed to load favorite outfits:", error);
+      setFavoriteOutfits([]);
     }
   }
 
   function getOutfitSignature(outfit) {
-    const topId =
-      outfit?.top?._id || outfit?.top?.id || outfit?.top?.name || "top";
+    const topId = outfit?.top?._id || outfit?.top?.id || outfit?.top?.name || "top";
     const bottomId =
-      outfit?.bottom?._id ||
-      outfit?.bottom?.id ||
-      outfit?.bottom?.name ||
-      "bottom";
+      outfit?.bottom?._id || outfit?.bottom?.id || outfit?.bottom?.name || "bottom";
     const shoesId =
       outfit?.shoes?._id || outfit?.shoes?.id || outfit?.shoes?.name || "shoes";
 
     return `${topId}-${bottomId}-${shoesId}`;
   }
 
-  function isFavorited(outfit) {
-    return favoriteIds.includes(getOutfitSignature(outfit));
-  }
-
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
-
-  async function saveFavoriteToDB(outfit) {
-    const res = await fetch(`${API_BASE}/api/outfits/favorite`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders(),
-      },
-      body: JSON.stringify({
-        top: outfit.top,
-        bottom: outfit.bottom,
-        shoes: outfit.shoes,
-        name: "",
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || "Failed to save favorite");
-    }
-
-    return data;
-  }
-
-  async function toggleFavorite(outfit) {
+  function removeFavorite(outfitToRemove) {
     try {
-      const signature = getOutfitSignature(outfit);
+      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
 
-      if (favoriteIds.includes(signature)) {
-        // optional: you can add delete later
-        return;
-      }
+      const updated = saved.filter(
+        (outfit) =>
+          getOutfitSignature(outfit) !== getOutfitSignature(outfitToRemove),
+      );
 
-      await saveFavoriteToDB(outfit);
-
-      setFavoriteIds((prev) => [...prev, signature]);
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
+      setFavoriteOutfits(updated);
     } catch (error) {
-      console.error("Failed to save favorite:", error);
+      console.error("Failed to remove favorite outfit:", error);
     }
   }
-
-  const favoriteCount = useMemo(() => favoriteIds.length, [favoriteIds]);
 
   return (
     <main
@@ -135,250 +61,188 @@ export default function Generator() {
       <section style={{ maxWidth: "1280px", margin: "0 auto" }}>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "28px",
-            flexWrap: "wrap",
-            gap: "12px",
+            background: "#ffffff",
+            borderRadius: "28px",
+            padding: "36px",
+            boxShadow: "0 14px 34px rgba(0,0,0,0.08)",
           }}
         >
-          <div>
-            <h1
-              style={{
-                fontSize: "2.6rem",
-                margin: 0,
-                color: "#1f1f1f",
-                letterSpacing: "-0.8px",
-              }}
-            >
-              Outfit Generator
-            </h1>
-            <p
-              style={{
-                marginTop: "8px",
-                color: "#666",
-                fontSize: "1rem",
-              }}
-            >
-              Curated looks from your closet.
-            </p>
-          </div>
-
-          <div
+          <h1
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              flexWrap: "wrap",
+              fontSize: "3rem",
+              margin: 0,
+              color: "#1f1f1f",
             }}
           >
-            <span
-              style={{
-                color: "#666",
-                fontSize: "0.95rem",
-              }}
-            >
-              {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}
-            </span>
+            Profile
+          </h1>
 
-            <button
-              onClick={generateMultipleOutfits}
-              style={{
-                background: "#1f1f1f",
-                color: "white",
-                border: "none",
-                borderRadius: "999px",
-                padding: "12px 20px",
-                fontSize: "0.95rem",
-                cursor: "pointer",
-              }}
-            >
-              Regenerate Looks
-            </button>
+          <p
+            style={{
+              marginTop: "12px",
+              color: "#666",
+              fontSize: "1.1rem",
+            }}
+          >
+            Your saved favorite outfits.
+          </p>
+
+          <div style={{ marginTop: "28px" }}>
+            {favoriteOutfits.length === 0 ? (
+              <div
+                style={{
+                  background: "#f3f1ef",
+                  borderRadius: "20px",
+                  padding: "28px",
+                  color: "#777",
+                }}
+              >
+                No favorite outfits saved yet.
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                  gap: "24px",
+                }}
+              >
+                {favoriteOutfits.map((outfit, index) => (
+                  <article
+                    key={outfit.favoriteId || outfit.id || index}
+                    style={{
+                      background: "#f8f6f3",
+                      borderRadius: "24px",
+                      padding: "20px",
+                      position: "relative",
+                    }}
+                  >
+                    <button
+                      onClick={() => removeFavorite(outfit)}
+                      style={{
+                        position: "absolute",
+                        top: "18px",
+                        right: "18px",
+                        width: "42px",
+                        height: "42px",
+                        borderRadius: "50%",
+                        border: "none",
+                        background: "#d94b63",
+                        color: "#fff",
+                        fontSize: "1rem",
+                        cursor: "pointer",
+                        boxShadow: "0 8px 18px rgba(0,0,0,0.14)",
+                      }}
+                    >
+                      ♥
+                    </button>
+
+                    <h2
+                      style={{
+                        margin: "0 0 16px 0",
+                        fontSize: "1.6rem",
+                        color: "#1f1f1f",
+                        paddingRight: "56px",
+                      }}
+                    >
+                      Saved Look {index + 1}
+                    </h2>
+
+                    <div
+                      style={{
+                        display: "grid",
+                        gap: "16px",
+                      }}
+                    >
+                      <OutfitPiece label="Top" item={outfit.top} type="top" />
+                      <OutfitPiece
+                        label="Bottom"
+                        item={outfit.bottom}
+                        type="bottom"
+                      />
+                      <OutfitPiece label="Shoes" item={outfit.shoes} type="shoes" />
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-
-        {loading && <p>Generating outfits...</p>}
-
-        {!loading && errorMessage && (
-          <div
-            style={{
-              background: "#fbeaea",
-              color: "#9f2d2d",
-              borderRadius: "16px",
-              padding: "14px 16px",
-              marginBottom: "20px",
-            }}
-          >
-            {errorMessage}
-          </div>
-        )}
-
-        {!loading && !errorMessage && outfits.length > 0 && (
-          <div
-            style={{
-              columnCount: 3,
-              columnGap: "22px",
-            }}
-          >
-            {outfits.map((outfit, index) => {
-              const favorited = isFavorited(outfit);
-              const shoeSide = index % 2 === 0 ? "left" : "right";
-
-              return (
-                <article
-                  key={getOutfitSignature(outfit) + index}
-                  style={{
-                    breakInside: "avoid",
-                    WebkitColumnBreakInside: "avoid",
-                    marginBottom: "22px",
-                    background: "#ffffff",
-                    borderRadius: "30px",
-                    padding: "18px",
-                    boxShadow: "0 10px 24px rgba(0,0,0,0.06)",
-                    position: "relative",
-                  }}
-                >
-                  <button
-                    onClick={() => toggleFavorite(outfit)}
-                    aria-label={
-                      favorited ? "Remove from favorites" : "Save to favorites"
-                    }
-                    style={{
-                      position: "absolute",
-                      top: "16px",
-                      right: "16px",
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "50%",
-                      border: "none",
-                      background: favorited ? "#d94b63" : "#1f1f1f",
-                      color: "#fff",
-                      fontSize: "1.1rem",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
-                      zIndex: 3,
-                    }}
-                  >
-                    ♥
-                  </button>
-
-                  <div
-                    style={{
-                      fontSize: "1.8rem",
-                      fontWeight: "700",
-                      color: "#1f1f1f",
-                      marginBottom: "14px",
-                      letterSpacing: "-0.6px",
-                    }}
-                  >
-                    Look {index + 1}
-                  </div>
-
-                  <div
-                    style={{
-                      background: "#f3f1ee",
-                      borderRadius: "24px",
-                      padding: "22px",
-                      minHeight: "700px",
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {outfit.top && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "22px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "82%",
-                          height: "260px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 2,
-                        }}
-                      >
-                        <img
-                          src={outfit.top.image}
-                          alt=""
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            display: "block",
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {outfit.bottom && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "240px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "68%",
-                          height: "300px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 1,
-                        }}
-                      >
-                        <img
-                          src={outfit.bottom.image}
-                          alt=""
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            display: "block",
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {outfit.shoes && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: "34px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "42%",
-                          height: "130px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 2,
-                        }}
-                      >
-                        <img
-                          src={outfit.shoes.image}
-                          alt=""
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            display: "block",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
       </section>
     </main>
+  );
+}
+
+function OutfitPiece({ label, item, type }) {
+  const imageStyleByType = {
+    top: { maxWidth: "82%", maxHeight: "180px" },
+    bottom: { maxWidth: "58%", maxHeight: "185px" },
+    shoes: { maxWidth: "78%", maxHeight: "105px" },
+  };
+
+  const imageStyle = imageStyleByType[type] || {
+    maxWidth: "75%",
+    maxHeight: "160px",
+  };
+
+  return (
+    <section
+      style={{
+        background: "#ece8e3",
+        borderRadius: "20px",
+        padding: "14px",
+      }}
+    >
+      <p
+        style={{
+          margin: "0 0 10px 0",
+          textAlign: "center",
+          fontWeight: "700",
+          fontSize: "1.05rem",
+          color: "#444",
+        }}
+      >
+        {label}
+      </p>
+
+      <div
+        style={{
+          background: "#fbfbfb",
+          borderRadius: "16px",
+          minHeight: "220px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "18px",
+        }}
+      >
+        {item?.image ? (
+          <img
+            src={item.image}
+            alt={item?.name || label}
+            style={{
+              ...imageStyle,
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+              display: "block",
+            }}
+          />
+        ) : (
+          <div style={{ color: "#999" }}>Missing item</div>
+        )}
+      </div>
+
+      <p
+        style={{
+          margin: "12px 0 0 0",
+          textAlign: "center",
+          color: "#222",
+          fontSize: "0.98rem",
+        }}
+      >
+        {item?.name || "Unnamed item"}
+      </p>
+    </section>
   );
 }

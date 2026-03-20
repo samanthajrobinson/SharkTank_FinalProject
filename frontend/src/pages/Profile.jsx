@@ -1,52 +1,75 @@
 import React, { useEffect, useState } from "react";
+import { authHeaders } from "../auth";
 
-import { getUser } from "../auth";
-
-const user = getUser();
-const FAVORITES_KEY = user
-  ? `fitmatch_favorite_outfits_${user.id}`
-  : "fitmatch_favorite_outfits_guest";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Profile() {
   const [favoriteOutfits, setFavoriteOutfits] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     loadFavorites();
   }, []);
 
-  function loadFavorites() {
+  async function loadFavorites() {
     try {
-      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
-      setFavoriteOutfits(saved);
+      setMessage("");
+
+      const res = await fetch(`${API_BASE}/api/outfits/mine`, {
+        headers: {
+          ...authHeaders(),
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.error || "Failed to load favorite outfits.");
+        setFavoriteOutfits([]);
+        return;
+      }
+
+      const favoritesOnly = (Array.isArray(data) ? data : []).filter(
+        (outfit) => outfit.favorite,
+      );
+
+      setFavoriteOutfits(favoritesOnly);
     } catch (error) {
       console.error("Failed to load favorite outfits:", error);
+      setMessage("Failed to load favorite outfits.");
       setFavoriteOutfits([]);
     }
   }
 
-  function getOutfitSignature(outfit) {
-    const topId = outfit?.top?._id || outfit?.top?.id || outfit?.top?.name || "top";
-    const bottomId =
-      outfit?.bottom?._id || outfit?.bottom?.id || outfit?.bottom?.name || "bottom";
-    const shoesId =
-      outfit?.shoes?._id || outfit?.shoes?.id || outfit?.shoes?.name || "shoes";
-
-    return `${topId}-${bottomId}-${shoesId}`;
-  }
-
-  function removeFavorite(outfitToRemove) {
+  async function removeFavorite(outfitToRemove) {
     try {
-      const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+      const res = await fetch(`${API_BASE}/api/outfits/unfavorite`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeaders(),
+        },
+        body: JSON.stringify({
+          top: outfitToRemove.top,
+          bottom: outfitToRemove.bottom,
+          shoes: outfitToRemove.shoes,
+        }),
+      });
 
-      const updated = saved.filter(
-        (outfit) =>
-          getOutfitSignature(outfit) !== getOutfitSignature(outfitToRemove),
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.error || "Failed to remove favorite outfit.");
+        return;
+      }
+
+      setFavoriteOutfits((prev) =>
+        prev.filter((outfit) => outfit._id !== outfitToRemove._id),
       );
-
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
-      setFavoriteOutfits(updated);
     } catch (error) {
       console.error("Failed to remove favorite outfit:", error);
+      setMessage("Failed to remove favorite outfit.");
     }
   }
 
@@ -87,6 +110,20 @@ export default function Profile() {
             Your saved favorite outfits.
           </p>
 
+          {message ? (
+            <div
+              style={{
+                background: "#fbeaea",
+                color: "#9f2d2d",
+                borderRadius: "16px",
+                padding: "14px 16px",
+                marginTop: "20px",
+              }}
+            >
+              {message}
+            </div>
+          ) : null}
+
           <div style={{ marginTop: "28px" }}>
             {favoriteOutfits.length === 0 ? (
               <div
@@ -109,7 +146,7 @@ export default function Profile() {
               >
                 {favoriteOutfits.map((outfit, index) => (
                   <article
-                    key={outfit.favoriteId || outfit.id || index}
+                    key={outfit._id || index}
                     style={{
                       background: "#f8f6f3",
                       borderRadius: "24px",
@@ -145,7 +182,7 @@ export default function Profile() {
                         paddingRight: "56px",
                       }}
                     >
-                      Saved Look {index + 1}
+                      {outfit.name || `Saved Look ${index + 1}`}
                     </h2>
 
                     <div
@@ -160,7 +197,11 @@ export default function Profile() {
                         item={outfit.bottom}
                         type="bottom"
                       />
-                      <OutfitPiece label="Shoes" item={outfit.shoes} type="shoes" />
+                      <OutfitPiece
+                        label="Shoes"
+                        item={outfit.shoes}
+                        type="shoes"
+                      />
                     </div>
                   </article>
                 ))}
