@@ -214,33 +214,22 @@ export default function Profile() {
   );
 }
 
-function OutfitPiece({ label, item, type }) {
-  const imageStyleByType = {
-    top: { maxWidth: "82%", maxHeight: "180px" },
-    bottom: { maxWidth: "58%", maxHeight: "185px" },
-    shoes: { maxWidth: "78%", maxHeight: "105px" },
-  };
-
-  const imageStyle = imageStyleByType[type] || {
-    maxWidth: "75%",
-    maxHeight: "160px",
-  };
-
+function OutfitPiece({ label, item }) {
   return (
-    <section
+    <div
       style={{
-        background: "#ece8e3",
-        borderRadius: "20px",
+        width: "220px",
+        background: "#f5f3ef",
+        borderRadius: "18px",
         padding: "14px",
+        textAlign: "center",
       }}
     >
       <p
         style={{
-          margin: "0 0 10px 0",
-          textAlign: "center",
-          fontWeight: "700",
-          fontSize: "1.05rem",
-          color: "#444",
+          marginBottom: "8px",
+          fontWeight: "600",
+          color: "#555",
         }}
       >
         {label}
@@ -248,42 +237,26 @@ function OutfitPiece({ label, item, type }) {
 
       <div
         style={{
-          background: "#fbfbfb",
-          borderRadius: "16px",
-          minHeight: "220px",
+          height: "160px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "18px",
         }}
       >
         {item?.image ? (
           <img
             src={item.image}
-            alt={item?.name || label}
+            alt={item?.name}
             style={{
-              ...imageStyle,
-              width: "100%",
-              height: "auto",
+              maxHeight: "100%",
+              maxWidth: "100%",
               objectFit: "contain",
-              display: "block",
             }}
           />
         ) : (
-          <div style={{ color: "#999" }}>Missing item</div>
+          <span style={{ color: "#aaa" }}>Missing</span>
         )}
       </div>
-
-      <p
-        style={{
-          margin: "12px 0 0 0",
-          textAlign: "center",
-          color: "#222",
-          fontSize: "0.98rem",
-        }}
-      >
-        {item?.name || "Unnamed item"}
-      </p>
-    </section>
+    </div>
   );
 }

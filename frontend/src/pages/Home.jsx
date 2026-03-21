@@ -224,8 +224,10 @@ function FavoriteOutfitCard({ outfit, index }) {
 
       <div
         style={{
-          display: "grid",
-          gap: "16px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
         }}
       >
         <OutfitPiece label="Top" item={outfit.top} type="top" />

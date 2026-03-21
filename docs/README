@@ -1,0 +1,27 @@
+Class: CS-341: "Modern Web Applications"
+Assignment: Shark Tank Final Project
+Date: 23 March 2026
+Author: Samantha Robinson
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+FitMatch is a full-stack web application that allows users to upload clothing items, organize a digital closet, generate outfits, and save favorite looks. The system combines user-uploaded wardrobe data with automated outfit generation to create a personalized styling experience. The platform also includes a community feature, where users can view outfits favorited by others.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Features: 
+- User Authentication: Register and login with JWT authentication
+- Digital Closet: Upload clothing items (tops, bottoms, shoes)
+- Outfit Generation: Generates outfits using user’s actual uploaded clothes
+- Favorites: Save favorite outfits to profile and share to community feed
+- Community Feed: Displays all users' favorite outfits
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Frontend & Backend
+Frontend: React (Vite), JavaScript, CSS, React Router
+Backend: Node.js, Express, MongoDB + Mongoose, JWT Authentication, Multer (file uploads), Sharp (image processing)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+The program can be used as follows from the terminal: 
+cd backend
+npm start
+cd frontend
+npm run dev
+Note: npm may need to be installed
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Deployment Link: 
+https://shark-tank-final-project.vercel.app/
