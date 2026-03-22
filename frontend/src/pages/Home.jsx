@@ -45,7 +45,7 @@ export default function Home() {
 
   return (
     <main className="site-page">
-      <div className="site-container">
+      <section className="site-container">
         <section style={{ marginBottom: "28px" }}>
           <div
             style={{
@@ -59,7 +59,7 @@ export default function Home() {
             <div>
               <h1
                 style={{
-                  fontSize: "3.5rem",
+                  fontSize: "2.4rem",
                   margin: 0,
                   color: "#1f1f1f",
                   letterSpacing: "-1px",
@@ -77,20 +77,12 @@ export default function Home() {
                   maxWidth: "720px",
                 }}
               >
-                Browse community favorite outfits from all users and get
-                inspired by saved looks across FitMatch.
+                Browse community favorite outfits from all users and get inspired
+                by saved looks across FitMatch.
               </p>
             </div>
 
-            <div
-              className="kicker-pill"
-              style={{
-                color: "#1f57b8",
-                borderColor: "#1f57b8",
-              }}
-            >
-              2026
-            </div>
+            <div className="kicker-pill">2026</div>
           </div>
         </section>
 
@@ -113,15 +105,7 @@ export default function Home() {
                   gap: "18px",
                 }}
               >
-                <article
-                  style={{
-                    background: "#f4f1ed",
-                    borderRadius: "22px",
-                    padding: "22px",
-                    border: "1px solid #e6e0d9",
-                    boxShadow: "0 8px 18px rgba(0,0,0,0.04)",
-                  }}
-                >
+                <article className="sub-card">
                   <div
                     style={{
                       color: "#1f57b8",
@@ -145,15 +129,7 @@ export default function Home() {
                   </p>
                 </article>
 
-                <article
-                  style={{
-                    background: "#f4f1ed",
-                    borderRadius: "22px",
-                    padding: "22px",
-                    border: "1px solid #e6e0d9",
-                    boxShadow: "0 8px 18px rgba(0,0,0,0.04)",
-                  }}
-                >
+                <article className="sub-card">
                   <div
                     style={{
                       color: "#1f57b8",
@@ -177,15 +153,7 @@ export default function Home() {
                   </p>
                 </article>
 
-                <article
-                  style={{
-                    background: "#f4f1ed",
-                    borderRadius: "22px",
-                    padding: "22px",
-                    border: "1px solid #e6e0d9",
-                    boxShadow: "0 8px 18px rgba(0,0,0,0.04)",
-                  }}
-                >
+                <article className="sub-card">
                   <div
                     style={{
                       color: "#1f57b8",
@@ -301,7 +269,7 @@ export default function Home() {
           {favoriteOutfits.length === 0 ? (
             <div className="empty-state">No favorite outfits yet.</div>
           ) : (
-            <div className="cards-grid">
+            <div className="fixed-outfit-grid">
               {favoriteOutfits.map((outfit, index) => (
                 <FavoriteOutfitCard
                   key={outfit._id || index}
@@ -317,7 +285,7 @@ export default function Home() {
           <span style={{ color: "#1f57b8", fontWeight: "700" }}>FitMatch</span>
           {" • "}CS 341{" • "}Samantha Robinson
         </footer>
-      </div>
+      </section>
     </main>
   );
 }
@@ -325,7 +293,7 @@ export default function Home() {
 function FavoriteOutfitCard({ outfit, index }) {
   return (
     <article
-      className="editorial-card"
+      className="editorial-card fixed-outfit-card"
       style={{
         padding: "16px",
       }}
@@ -359,15 +327,7 @@ function FavoriteOutfitCard({ outfit, index }) {
           </p>
         </div>
 
-        <div
-          className="kicker-pill"
-          style={{
-            color: "#1f57b8",
-            borderColor: "#1f57b8",
-          }}
-        >
-          Favorite
-        </div>
+        <div className="kicker-pill">Favorite</div>
       </div>
 
       <div
@@ -375,7 +335,7 @@ function FavoriteOutfitCard({ outfit, index }) {
           background: "#f3f1ee",
           borderRadius: "24px",
           padding: "16px",
-          width: "380px",
+          width: "100%",
           height: "600px",
           position: "relative",
           overflow: "hidden",
@@ -400,7 +360,8 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.top.image}
               alt=""
               style={{
-                width: "100%",
+                width: "300px",
+                height: "220px",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -417,7 +378,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               left: "50%",
               transform: "translateX(-50%)",
               width: "240px",
-              height: "350px",
+              height: "220px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -428,7 +389,8 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.bottom.image}
               alt=""
               style={{
-                width: "100%",
+                width: "240px",
+                height: "220px",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -445,7 +407,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               left: "50%",
               transform: "translateX(-50%)",
               width: "160px",
-              height: "110px",
+              height: "90px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -456,7 +418,8 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.shoes.image}
               alt=""
               style={{
-                width: "100%",
+                width: "160px",
+                height: "90px",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
