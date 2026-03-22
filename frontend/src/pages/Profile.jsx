@@ -74,7 +74,7 @@ export default function Profile() {
 
   return (
     <main className="site-page">
-      <div className="site-container">
+      <section className="site-container">
         <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
@@ -89,7 +89,7 @@ export default function Profile() {
 
           <p
             style={{
-              marginTop: "8px",
+              marginTop: "10px",
               marginBottom: 0,
               color: "#666",
               fontSize: "1.1rem",
@@ -103,7 +103,20 @@ export default function Profile() {
 
         <section className="section-card">
           <div className="section-header">
-            <span className="section-subtext">
+            <div>
+              <h2 className="section-title">Saved Looks</h2>
+              <p className="section-subtext">
+                Your saved favorites from generated outfits.
+              </p>
+            </div>
+
+            <span
+              style={{
+                color: "#1f57b8",
+                fontSize: "1rem",
+                fontWeight: "700",
+              }}
+            >
               {favoriteOutfits.length} saved look
               {favoriteOutfits.length === 1 ? "" : "s"}
             </span>
@@ -112,11 +125,11 @@ export default function Profile() {
           {favoriteOutfits.length === 0 ? (
             <div className="empty-state">No favorite outfits saved yet.</div>
           ) : (
-            <div className="cards-grid">
+            <div className="fixed-outfit-grid">
               {favoriteOutfits.map((outfit, index) => (
                 <article
                   key={outfit._id || index}
-                  className="editorial-card"
+                  className="editorial-card fixed-outfit-card"
                   style={{
                     padding: "16px",
                   }}
@@ -138,6 +151,7 @@ export default function Profile() {
                     </h2>
 
                     <button
+                      type="button"
                       onClick={() => removeFavorite(outfit)}
                       className="circle-action active"
                       aria-label="Remove from favorites"
@@ -151,7 +165,7 @@ export default function Profile() {
                       background: "#f3f1ee",
                       borderRadius: "24px",
                       padding: "16px",
-                      width: "380px",
+                      width: "100%",
                       height: "600px",
                       position: "relative",
                       overflow: "hidden",
@@ -176,8 +190,8 @@ export default function Profile() {
                           src={outfit.top.image}
                           alt=""
                           style={{
-                            width: "100%",
-                            height: "100%",
+                            width: "300px",
+                            height: "220px",
                             objectFit: "contain",
                             display: "block",
                             filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -194,7 +208,7 @@ export default function Profile() {
                           left: "50%",
                           transform: "translateX(-50%)",
                           width: "240px",
-                          height: "350px",
+                          height: "220px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -205,8 +219,8 @@ export default function Profile() {
                           src={outfit.bottom.image}
                           alt=""
                           style={{
-                            width: "100%",
-                            height: "100%",
+                            width: "240px",
+                            height: "220px",
                             objectFit: "contain",
                             display: "block",
                             filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -223,7 +237,7 @@ export default function Profile() {
                           left: "50%",
                           transform: "translateX(-50%)",
                           width: "160px",
-                          height: "110px",
+                          height: "90px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -234,8 +248,8 @@ export default function Profile() {
                           src={outfit.shoes.image}
                           alt=""
                           style={{
-                            width: "100%",
-                            height: "100%",
+                            width: "160px",
+                            height: "90px",
                             objectFit: "contain",
                             display: "block",
                             filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -251,9 +265,10 @@ export default function Profile() {
         </section>
 
         <footer className="footer">
-          FitMatch • CS 341 • Samantha Robinson
+          <span style={{ color: "#1f57b8", fontWeight: "700" }}>FitMatch</span>
+          {" • "}CS 341{" • "}Samantha Robinson
         </footer>
-      </div>
+      </section>
     </main>
   );
 }

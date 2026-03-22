@@ -321,7 +321,7 @@ textarea {
 }
 
 .field {
-  width: 100%;
+  width: 300px;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 12px 14px;
