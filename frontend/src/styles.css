@@ -384,7 +384,7 @@ input[type="file"] {
 }
 
 .closet-card {
-  width: 380px;
+  width: 33%;
   background: #f3f1ef;
   border-radius: 22px;
   padding: 16px;
@@ -513,4 +513,24 @@ input[type="file"] {
   .fixed-outfit-card {
     width: 100%;
   }
+}
+
+.nav-pill {
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  border-radius: var(--pill);
+  padding: 12px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-pill.active {
+  background: #1f1f1f;
+  color: #fff;
 }
