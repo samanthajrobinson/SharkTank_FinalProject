@@ -336,7 +336,7 @@ function FavoriteOutfitCard({ outfit, index }) {
           borderRadius: "24px",
           padding: "16px",
           width: "100%",
-          height: "600px",
+          height: "500px",
           position: "relative",
           overflow: "hidden",
         }}
