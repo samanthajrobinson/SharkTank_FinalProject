@@ -187,7 +187,8 @@ export default function Closet() {
         padding: "32px",
       }}
     >
-      <section style={{ maxWidth: "1280px", margin: "0 auto" }}>
+      <section style={{ maxWidth: "1400px", margin: "0 auto" }}>
+        {" "}
         <div style={{ marginBottom: "28px" }}>
           <h1
             style={{
@@ -208,7 +209,6 @@ export default function Closet() {
             Add pieces to your closet and browse by category.
           </p>
         </div>
-
         {errorMessage && (
           <div
             style={{
@@ -222,11 +222,11 @@ export default function Closet() {
             {errorMessage}
           </div>
         )}
-
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 250px)",
+            gridTemplateColumns: "320px 1fr",
+            alignItems: "start",
             justifyContent: "center",
             justifyContent: "center",
             gap: "20px",
@@ -404,7 +404,8 @@ export default function Closet() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, 380px)",
+                    gridTemplateColumns: "repeat(auto-fill, 380px)",
+                    justifyContent: "center",
                     justifyContent: "center",
                     gap: "20px",
                   }}
