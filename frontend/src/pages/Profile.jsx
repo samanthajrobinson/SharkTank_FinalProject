@@ -79,7 +79,7 @@ export default function Profile() {
         <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
-              fontSize: "3.5rem",
+              fontSize: "2.4rem",
               margin: 0,
               color: "#1f1f1f",
               letterSpacing: "-1px",
@@ -90,7 +90,7 @@ export default function Profile() {
 
           <p
             style={{
-              marginTop: "10px",
+              marginTop: "8px",
               marginBottom: 0,
               color: "#666",
               fontSize: "1.1rem",
@@ -201,7 +201,7 @@ export default function Profile() {
                           left: "50%",
                           transform: "translateX(-50%)",
                           width: "68%",
-                          height: "300px",
+                          height: "30s0px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",

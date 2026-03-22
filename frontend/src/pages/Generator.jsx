@@ -163,7 +163,7 @@ export default function Generator() {
         <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
-              fontSize: "3.5rem",
+              fontSize: "2.4rem",
               margin: 0,
               color: "#1f1f1f",
               letterSpacing: "-1px",
@@ -174,7 +174,7 @@ export default function Generator() {
 
           <p
             style={{
-              marginTop: "10px",
+              marginTop: "8px",
               marginBottom: 0,
               color: "#666",
               fontSize: "1.1rem",
