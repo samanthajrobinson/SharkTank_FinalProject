@@ -52,42 +52,7 @@ export default function Home() {
               flexWrap: "wrap",
             }}
           >
-            <div>
-              <h1
-                style={{
-                  fontSize: "3.5rem",
-                  margin: 0,
-                  color: "#1f1f1f",
-                  letterSpacing: "-1px",
-                }}
-              >
-                Home
-              </h1>
 
-              <p
-                style={{
-                  marginTop: "10px",
-                  marginBottom: 0,
-                  color: "#666",
-                  fontSize: "1.1rem",
-                  maxWidth: "720px",
-                }}
-              >
-                Browse community favorite outfits from all users and get inspired
-                by saved looks across FitMatch.
-              </p>
-            </div>
-
-            <div
-              className="kicker-pill"
-              style={{
-                color: "#1f57b8",
-                borderColor: "#1f57b8",
-              }}
-            >
-              2026
-            </div>
-          </div>
         </section>
 
         <section className="section-card">
