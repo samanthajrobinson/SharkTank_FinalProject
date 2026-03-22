@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { authHeaders } from "../auth";
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Closet() {
@@ -50,21 +51,19 @@ export default function Closet() {
     const { name, value, files } = e.target;
 
     if (name === "image") {
-      setForm({ ...form, image: files[0] });
+      setForm((prev) => ({ ...prev, image: files[0] }));
     } else {
-      setForm({ ...form, [name]: value });
+      setForm((prev) => ({ ...prev, [name]: value }));
     }
   }
 
   async function handleUpload(e) {
     e.preventDefault();
-
     if (isUploading) return;
 
     try {
       setIsUploading(true);
       setErrorMessage("");
-      console.log("submit clicked");
 
       const data = new FormData();
       data.append("name", form.name);
@@ -84,11 +83,7 @@ export default function Closet() {
         body: data,
       });
 
-      console.log("response arrived", res.status);
-
       const result = await res.json();
-      console.log("UPLOAD STATUS:", res.status);
-      console.log("UPLOAD RESPONSE:", result);
 
       if (!res.ok) {
         setErrorMessage(result.error || "Failed to upload item.");
@@ -116,8 +111,8 @@ export default function Closet() {
   function startEdit(item) {
     setEditingId(item._id);
     setEditForm({
-      name: item.name,
-      type: item.type,
+      name: item.name || "",
+      type: item.type || "top",
     });
   }
 
@@ -180,68 +175,35 @@ export default function Closet() {
   }, [clothes]);
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f7f5f2",
-        padding: "32px",
-      }}
-    >
-      <section style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        {" "}
-        <div style={{ marginBottom: "28px" }}>
+    <main className="site-page">
+      <section className="site-container">
+        <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
-              fontSize: "2.4rem",
+              fontSize: "3.5rem",
               margin: 0,
               color: "#1f1f1f",
+              letterSpacing: "-1px",
             }}
           >
             Your Closet
           </h1>
           <p
             style={{
-              marginTop: "8px",
+              marginTop: "10px",
+              marginBottom: 0,
               color: "#666",
-              fontSize: "1rem",
+              fontSize: "1.1rem",
             }}
           >
             Add pieces to your closet and browse by category.
           </p>
-        </div>
-        {errorMessage && (
-          <div
-            style={{
-              background: "#fbeaea",
-              color: "#9f2d2d",
-              borderRadius: "16px",
-              padding: "14px 16px",
-              marginBottom: "20px",
-            }}
-          >
-            {errorMessage}
-          </div>
-        )}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "320px 1fr",
-            alignItems: "start",
-            justifyContent: "center",
-            justifyContent: "center",
-            gap: "20px",
-          }}
-        >
-          <aside
-            style={{
-              background: "#ffffff",
-              borderRadius: "24px",
-              padding: "20px",
-              boxShadow: "0 10px 28px rgba(0,0,0,0.07)",
-              position: "sticky",
-              top: "24px",
-            }}
-          >
+        </section>
+
+        {errorMessage ? <div className="status-error">{errorMessage}</div> : null}
+
+        <div className="closet-layout">
+          <aside className="closet-sidebar">
             <h2
               style={{
                 marginTop: 0,
@@ -253,14 +215,7 @@ export default function Closet() {
               View Closet
             </h2>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-                marginBottom: "24px",
-              }}
-            >
+            <div className="filter-stack">
               <FilterButton
                 label={`All Items (${counts.all})`}
                 active={selectedFilter === "all"}
@@ -302,36 +257,53 @@ export default function Closet() {
 
               <form
                 onSubmit={handleUpload}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "12px",
-                }}
+                className="form-grid"
               >
+                <input
+                  className="field"
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Item name"
+                />
+
                 <select
+                  className="field"
                   name="type"
                   value={form.type}
                   onChange={handleChange}
-                  style={inputStyle}
                 >
                   <option value="top">Top</option>
                   <option value="bottom">Bottom</option>
                   <option value="shoes">Shoes</option>
                 </select>
 
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    color: "#555",
+                    fontSize: "0.95rem",
+                  }}
+                >
+                  <input type="checkbox" />
+                  Wardrobe essential
+                </label>
+
                 <input
                   type="file"
                   name="image"
                   onChange={handleChange}
                   required
-                  style={fileStyle}
                 />
 
                 <button
                   type="submit"
                   disabled={isUploading}
+                  className="primary-pill"
                   style={{
-                    ...primaryButtonStyle,
                     opacity: isUploading ? 0.7 : 1,
                     cursor: isUploading ? "not-allowed" : "pointer",
                   }}
@@ -342,30 +314,13 @@ export default function Closet() {
             </div>
           </aside>
 
-          <section>
-            <div
-              style={{
-                background: "#ffffff",
-                borderRadius: "24px",
-                padding: "20px",
-                boxShadow: "0 10px 28px rgba(0,0,0,0.07)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "20px",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                }}
-              >
+          <section className="closet-panel">
+            <div className="section-header">
+              <div>
                 <h2
+                  className="section-title"
                   style={{
-                    margin: 0,
-                    fontSize: "1.4rem",
-                    color: "#1f1f1f",
+                    fontSize: "2rem",
                   }}
                 >
                   {selectedFilter === "all"
@@ -376,57 +331,39 @@ export default function Closet() {
                         ? "Bottoms"
                         : "Shoes"}
                 </h2>
-
-                <span
-                  style={{
-                    color: "#777",
-                    fontSize: "0.95rem",
-                  }}
-                >
-                  {filteredClothes.length} item
-                  {filteredClothes.length === 1 ? "" : "s"}
-                </span>
               </div>
 
-              {filteredClothes.length === 0 ? (
-                <div
-                  style={{
-                    background: "#f8f5f2",
-                    borderRadius: "18px",
-                    padding: "28px",
-                    textAlign: "center",
-                    color: "#777",
-                  }}
-                >
-                  No items in this category yet.
-                </div>
-              ) : (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, 380px)",
-                    justifyContent: "center",
-                    justifyContent: "center",
-                    gap: "20px",
-                  }}
-                >
-                  {filteredClothes.map((item) => (
-                    <ClosetCard
-                      key={item._id}
-                      item={item}
-                      isEditing={editingId === item._id}
-                      editForm={editForm}
-                      setEditForm={setEditForm}
-                      onStartEdit={() => startEdit(item)}
-                      onCancelEdit={cancelEdit}
-                      onSaveEdit={() => saveEdit(item._id)}
-                    />
-                  ))}
-                </div>
-              )}
+              <span className="section-subtext">
+                {filteredClothes.length} item
+                {filteredClothes.length === 1 ? "" : "s"}
+              </span>
             </div>
+
+            {filteredClothes.length === 0 ? (
+              <div className="empty-state">No items in this category yet.</div>
+            ) : (
+              <div className="closet-grid">
+                {filteredClothes.map((item) => (
+                  <ClosetCard
+                    key={item._id}
+                    item={item}
+                    isEditing={editingId === item._id}
+                    editForm={editForm}
+                    setEditForm={setEditForm}
+                    onStartEdit={() => startEdit(item)}
+                    onCancelEdit={cancelEdit}
+                    onSaveEdit={() => saveEdit(item._id)}
+                  />
+                ))}
+              </div>
+            )}
           </section>
         </div>
+
+        <footer className="footer">
+          <span style={{ color: "#1f57b8", fontWeight: "700" }}>FitMatch</span>
+          {" • "}CS 341{" • "}Samantha Robinson
+        </footer>
       </section>
     </main>
   );
@@ -435,6 +372,7 @@ export default function Closet() {
 function FilterButton({ label, active, onClick }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       style={{
         width: "100%",
@@ -463,29 +401,12 @@ function ClosetCard({
   onCancelEdit,
   onSaveEdit,
 }) {
-  const imageStyleByType = {
-    top: { maxWidth: "80%", maxHeight: "170px" },
-    bottom: { maxWidth: "58%", maxHeight: "175px" },
-    shoes: { maxWidth: "78%", maxHeight: "105px" },
-  };
-
-  const imageStyle = imageStyleByType[item.type] || {
-    maxWidth: "75%",
-    maxHeight: "160px",
-  };
-
   return (
-    <article
-      style={{
-        background: "#f3f1ef",
-        borderRadius: "22px",
-        padding: "16px",
-        position: "relative",
-      }}
-    >
+    <article className="closet-card">
       <button
+        type="button"
         onClick={onStartEdit}
-        aria-label={`Edit ${item.name}`}
+        aria-label={`Edit ${item.name || "item"}`}
         style={{
           position: "absolute",
           top: "12px",
@@ -515,11 +436,12 @@ function ClosetCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          borderRadius: "18px",
         }}
       >
         <img
           src={item.image}
-          alt={item.name}
+          alt={item.name || "Clothing item"}
           style={{
             width: "95%",
             height: "95%",
@@ -542,7 +464,7 @@ function ClosetCard({
             onChange={(e) =>
               setEditForm((prev) => ({ ...prev, name: e.target.value }))
             }
-            style={inputStyle}
+            className="field"
             placeholder="Item name"
           />
 
@@ -551,7 +473,7 @@ function ClosetCard({
             onChange={(e) =>
               setEditForm((prev) => ({ ...prev, type: e.target.value }))
             }
-            style={inputStyle}
+            className="field"
           >
             <option value="top">Top</option>
             <option value="bottom">Bottom</option>
@@ -565,22 +487,19 @@ function ClosetCard({
             }}
           >
             <button
+              type="button"
               onClick={onSaveEdit}
+              className="primary-pill"
               style={{
                 flex: 1,
-                border: "none",
-                borderRadius: "999px",
                 padding: "10px 14px",
-                background: "#1f1f1f",
-                color: "#fff",
-                fontWeight: "600",
-                cursor: "pointer",
               }}
             >
               Save
             </button>
 
             <button
+              type="button"
               onClick={onCancelEdit}
               style={{
                 flex: 1,
@@ -607,7 +526,7 @@ function ClosetCard({
               textAlign: "center",
             }}
           >
-            {item.name}
+            {item.name || "Unnamed item"}
           </p>
 
           <p
@@ -626,29 +545,3 @@ function ClosetCard({
     </article>
   );
 }
-
-const inputStyle = {
-  width: "100%",
-  border: "1px solid #ddd6ce",
-  borderRadius: "14px",
-  padding: "12px 14px",
-  fontSize: "0.95rem",
-  background: "#fff",
-  boxSizing: "border-box",
-};
-
-const fileStyle = {
-  width: "100%",
-  fontSize: "0.92rem",
-};
-
-const primaryButtonStyle = {
-  border: "none",
-  borderRadius: "999px",
-  padding: "12px 18px",
-  background: "#1f1f1f",
-  color: "#fff",
-  fontSize: "0.95rem",
-  fontWeight: "600",
-  cursor: "pointer",
-};
