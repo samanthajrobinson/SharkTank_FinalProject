@@ -534,3 +534,37 @@ input[type="file"] {
   background: #1f1f1f;
   color: #fff;
 }
+
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f3f1ef;
+  border: 1px solid #ddd6ce;
+  border-radius: 18px;
+  padding: 12px 14px;
+  width: 100%;
+  min-width: 0;
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1f1f1f;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.file-name {
+  color: #666;
+  font-size: 0.95rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -200,7 +200,9 @@ export default function Closet() {
           </p>
         </section>
 
-        {errorMessage ? <div className="status-error">{errorMessage}</div> : null}
+        {errorMessage ? (
+          <div className="status-error">{errorMessage}</div>
+        ) : null}
 
         <div className="closet-layout">
           <aside className="closet-sidebar">
@@ -255,10 +257,7 @@ export default function Closet() {
                 Add New Item
               </h3>
 
-              <form
-                onSubmit={handleUpload}
-                className="form-grid"
-              >
+              <form onSubmit={handleUpload} className="form-grid">
                 <input
                   className="field"
                   type="text"
@@ -282,22 +281,32 @@ export default function Closet() {
                 <label
                   style={{
                     display: "flex",
-                    alignItems: "left",
+                    alignItems: "center",
                     gap: "10px",
                     color: "#555",
                     fontSize: "0.95rem",
                   }}
                 >
                   <input type="checkbox" />
-                  Wardrobe essential
+                  <span>Wardrobe essential</span>
                 </label>
 
-                <input
-                  type="file"
-                  name="image"
-                  onChange={handleChange}
-                  required
-                />
+                <div className="file-upload">
+                  <label className="file-label">
+                    Choose File
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={handleChange}
+                      required
+                      hidden
+                    />
+                  </label>
+
+                  <span className="file-name">
+                    {form.image ? form.image.name : "No file chosen"}
+                  </span>
+                </div>
 
                 <button
                   type="submit"

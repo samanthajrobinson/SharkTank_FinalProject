@@ -78,7 +78,7 @@ export default function Home() {
                 }}
               >
                 Browse community favorite outfits from all users and get
-                inspired by saved looks across FitMatch.
+                inspired by saved looks.
               </p>
             </div>
 
