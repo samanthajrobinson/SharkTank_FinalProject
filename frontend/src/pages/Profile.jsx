@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { authHeaders } from "../auth";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Profile() {
   const [favoriteOutfits, setFavoriteOutfits] = useState([]);
@@ -152,7 +151,8 @@ export default function Profile() {
                       background: "#f3f1ee",
                       borderRadius: "24px",
                       padding: "16px",
-                      minHeight: "560px",
+                      width: "380px",
+                      height: "600px",
                       position: "relative",
                       overflow: "hidden",
                     }}
@@ -164,7 +164,7 @@ export default function Profile() {
                           top: "10px",
                           left: "50%",
                           transform: "translateX(-50%)",
-                          width: "82%",
+                          width: "300px",
                           height: "220px",
                           display: "flex",
                           alignItems: "center",
@@ -176,8 +176,8 @@ export default function Profile() {
                           src={outfit.top.image}
                           alt=""
                           style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
+                            width: "100%",
+                            height: "100%",
                             objectFit: "contain",
                             display: "block",
                             filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -193,7 +193,7 @@ export default function Profile() {
                           top: "190px",
                           left: "50%",
                           transform: "translateX(-50%)",
-                          width: "68%",
+                          width: "240px",
                           height: "400px",
                           display: "flex",
                           alignItems: "center",
@@ -205,8 +205,8 @@ export default function Profile() {
                           src={outfit.bottom.image}
                           alt=""
                           style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
+                            width: "100%",
+                            height: "100%",
                             objectFit: "contain",
                             display: "block",
                             filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -222,7 +222,7 @@ export default function Profile() {
                           bottom: "12px",
                           left: "50%",
                           transform: "translateX(-50%)",
-                          width: "42%",
+                          width: "160px",
                           height: "110px",
                           display: "flex",
                           alignItems: "center",
@@ -234,8 +234,8 @@ export default function Profile() {
                           src={outfit.shoes.image}
                           alt=""
                           style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
+                            width: "100%",
+                            height: "100%",
                             objectFit: "contain",
                             display: "block",
                             filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",

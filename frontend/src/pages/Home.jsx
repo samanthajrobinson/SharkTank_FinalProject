@@ -263,7 +263,8 @@ function FavoriteOutfitCard({ outfit, index }) {
           background: "#f3f1ee",
           borderRadius: "24px",
           padding: "16px",
-          minHeight: "560px",
+          width: "380px",
+height: "600px",
           position: "relative",
           overflow: "hidden",
         }}
@@ -275,7 +276,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               top: "10px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "82%",
+              width: "300px",
               height: "220px",
               display: "flex",
               alignItems: "center",
@@ -287,8 +288,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.top.image}
               alt=""
               style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
+                width: "100%",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -304,7 +304,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               top: "190px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "68%",
+              width: "240px",
               height: "240px",
               display: "flex",
               alignItems: "center",
@@ -316,8 +316,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.bottom.image}
               alt=""
               style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
+                width: "100%",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
@@ -333,7 +332,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               bottom: "12px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "42%",
+              width: "160px",
               height: "110px",
               display: "flex",
               alignItems: "center",
@@ -345,8 +344,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.shoes.image}
               alt=""
               style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
+                width: "100%",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
