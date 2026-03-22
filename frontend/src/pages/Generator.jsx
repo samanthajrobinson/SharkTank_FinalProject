@@ -159,259 +159,175 @@ export default function Generator() {
   const favoriteCount = useMemo(() => favoriteIds.length, [favoriteIds]);
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f7f5f2",
-        padding: "32px",
-      }}
-    >
-      <section style={{ maxWidth: "1280px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "28px",
-            flexWrap: "wrap",
-            gap: "12px",
-          }}
-        >
-          <div>
-            <h1
-              style={{
-                fontSize: "2.6rem",
-                margin: 0,
-                color: "#1f1f1f",
-                letterSpacing: "-0.8px",
-              }}
-            >
-              Outfit Generator
-            </h1>
-            <p
-              style={{
-                marginTop: "8px",
-                color: "#666",
-                fontSize: "1rem",
-              }}
-            >
-              Curated looks from your closet.
-            </p>
-          </div>
-
+    <main className="site-page">
+      <div className="site-container">
+        <section className="hero-card">
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              gap: "12px",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "16px",
               flexWrap: "wrap",
             }}
           >
-            <span
-              style={{
-                color: "#666",
-                fontSize: "0.95rem",
-              }}
-            >
-              {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}
-            </span>
+            <div>
+              <h1 className="hero-title" style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}>
+                Generator
+              </h1>
+              <p className="hero-text">
+                Curated looks generated from your own closet, with favorites saved
+                directly to your profile and community feed.
+              </p>
+            </div>
 
-            <button
-              onClick={generateMultipleOutfits}
-              style={{
-                background: "#1f1f1f",
-                color: "white",
-                border: "none",
-                borderRadius: "999px",
-                padding: "12px 20px",
-                fontSize: "0.95rem",
-                cursor: "pointer",
-              }}
-            >
+            <div className="kicker-pill">
+              {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-card">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">Outfit Generator</h2>
+              <p className="section-subtext">
+                Generate styled looks using your uploaded tops, bottoms, and shoes.
+              </p>
+            </div>
+
+            <button className="primary-pill" onClick={generateMultipleOutfits}>
               Regenerate Looks
             </button>
           </div>
-        </div>
 
-        {loading && <p>Generating outfits...</p>}
+          {loading && (
+            <div className="empty-state">Generating outfits...</div>
+          )}
 
-        {!loading && errorMessage && (
-          <div
-            style={{
-              background: "#fbeaea",
-              color: "#9f2d2d",
-              borderRadius: "16px",
-              padding: "14px 16px",
-              marginBottom: "20px",
-            }}
-          >
-            {errorMessage}
-          </div>
-        )}
+          {!loading && errorMessage && (
+            <div className="status-error">{errorMessage}</div>
+          )}
 
-        {!loading && !errorMessage && outfits.length > 0 && (
-          <div
-            style={{
-              columnCount: 3,
-              columnGap: "22px",
-            }}
-          >
-            {outfits.map((outfit, index) => {
-              const favorited = isFavorited(outfit);
+          {!loading && !errorMessage && outfits.length > 0 && (
+            <div className="cards-grid">
+              {outfits.map((outfit, index) => {
+                const favorited = isFavorited(outfit);
 
-              return (
-                <article
-                  key={getOutfitSignature(outfit) + index}
-                  style={{
-                    breakInside: "avoid",
-                    WebkitColumnBreakInside: "avoid",
-                    marginBottom: "22px",
-                    background: "#ffffff",
-                    borderRadius: "30px",
-                    padding: "18px",
-                    boxShadow: "0 10px 24px rgba(0,0,0,0.06)",
-                    position: "relative",
-                  }}
-                >
-                  <button
-                    onClick={() => toggleFavorite(outfit)}
-                    aria-label={
-                      favorited ? "Remove from favorites" : "Save to favorites"
-                    }
-                    style={{
-                      position: "absolute",
-                      top: "16px",
-                      right: "16px",
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "50%",
-                      border: "none",
-                      background: favorited ? "#d94b63" : "#1f1f1f",
-                      color: "#fff",
-                      fontSize: "1.1rem",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
-                      zIndex: 3,
-                    }}
+                return (
+                  <article
+                    key={getOutfitSignature(outfit) + index}
+                    className="editorial-card"
                   >
-                    ♥
-                  </button>
-
-                  <div
-                    style={{
-                      fontSize: "1.8rem",
-                      fontWeight: "700",
-                      color: "#1f1f1f",
-                      marginBottom: "14px",
-                      letterSpacing: "-0.6px",
-                    }}
-                  >
-                    Look {index + 1}
-                  </div>
-
-                  <div
-                    style={{
-                      background: "#f3f1ee",
-                      borderRadius: "24px",
-                      padding: "22px",
-                      minHeight: "700px",
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {outfit.top && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "22px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "82%",
-                          height: "260px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 2,
-                        }}
-                      >
-                        <img
-                          src={outfit.top.image}
-                          alt={outfit.top.name || "Top"}
+                    <div className="editorial-card-header">
+                      <div>
+                        <h2 className="editorial-card-title">
+                          Look {index + 1}
+                        </h2>
+                        <p
                           style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            display: "block",
+                            margin: "6px 0 0 0",
+                            color: "#777",
+                            fontSize: "0.95rem",
                           }}
-                        />
+                        >
+                          Generated from your closet
+                        </p>
                       </div>
-                    )}
 
-                    {outfit.bottom && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "240px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "68%",
-                          height: "300px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 1,
-                        }}
+                      <button
+                        onClick={() => toggleFavorite(outfit)}
+                        aria-label={
+                          favorited
+                            ? "Remove from favorites"
+                            : "Save to favorites"
+                        }
+                        className={`circle-action ${favorited ? "active" : ""}`}
                       >
-                        <img
-                          src={outfit.bottom.image}
-                          alt={outfit.bottom.name || "Bottom"}
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            display: "block",
-                          }}
-                        />
-                      </div>
-                    )}
+                        ♥
+                      </button>
+                    </div>
 
-                    {outfit.shoes && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: "34px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "42%",
-                          height: "130px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 2,
-                        }}
-                      >
-                        <img
-                          src={outfit.shoes.image}
-                          alt={outfit.shoes.name || "Shoes"}
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                            display: "block",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
+                    <div className="outfit-editorial-grid">
+                      <OutfitPiece
+                        label="Top"
+                        item={outfit.top}
+                        type="top"
+                        hero
+                      />
+                      <OutfitPiece
+                        label="Bottom"
+                        item={outfit.bottom}
+                        type="bottom"
+                      />
+                      <OutfitPiece
+                        label="Shoes"
+                        item={outfit.shoes}
+                        type="shoes"
+                      />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+
+          {!loading && !errorMessage && outfits.length === 0 && (
+            <div className="empty-state">
+              No outfits generated yet.
+            </div>
+          )}
+        </section>
+
+        <footer className="footer">
+          FitMatch • CS 341 • Samantha Robinson
+        </footer>
+      </div>
     </main>
+  );
+}
+
+function OutfitPiece({ label, item, type, hero = false }) {
+  const imageStyleByType = {
+    top: { maxWidth: "72%", maxHeight: "220px" },
+    bottom: { maxWidth: "62%", maxHeight: "220px" },
+    shoes: { maxWidth: "72%", maxHeight: "120px" },
+  };
+
+  const imageStyle = imageStyleByType[type] || {
+    maxWidth: "70%",
+    maxHeight: "180px",
+  };
+
+  return (
+    <section className={`piece-card ${hero ? "hero-piece" : ""}`}>
+      <div className="piece-label">{label}</div>
+
+      <div
+        className="piece-image-box"
+        style={{
+          minHeight: type === "shoes" ? "180px" : "300px",
+        }}
+      >
+        {item?.image ? (
+          <img
+            src={item.image}
+            alt={item?.name || label}
+            style={{
+              ...imageStyle,
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+              display: "block",
+              filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.10))",
+            }}
+          />
+        ) : (
+          <div style={{ color: "#999" }}>Missing item</div>
+        )}
+      </div>
+
+      <p className="piece-name">{item?.name || "Unnamed item"}</p>
+    </section>
   );
 }
