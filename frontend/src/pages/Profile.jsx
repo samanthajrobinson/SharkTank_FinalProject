@@ -219,7 +219,7 @@ export default function Profile() {
                       <div
                         style={{
                           position: "absolute",
-                          bottom: "10px",
+                          bottom: "12px",
                           left: "50%",
                           transform: "translateX(-50%)",
                           width: "42%",
