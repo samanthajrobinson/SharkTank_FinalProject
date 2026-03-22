@@ -282,7 +282,7 @@ export default function Closet() {
                 <label
                   style={{
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "left",
                     gap: "10px",
                     color: "#555",
                     fontSize: "0.95rem",
