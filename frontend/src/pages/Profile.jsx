@@ -201,7 +201,7 @@ export default function Profile() {
                           left: "50%",
                           transform: "translateX(-50%)",
                           width: "68%",
-                          height: "240px",
+                          height: "300px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",

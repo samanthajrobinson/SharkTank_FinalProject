@@ -304,7 +304,7 @@ export default function Generator() {
                             left: "50%",
                             transform: "translateX(-50%)",
                             width: "68%",
-                            height: "280px",
+                            height: "300px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
