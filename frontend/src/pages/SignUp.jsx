@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { saveAuth } from "../auth";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function SignUp() {
   const [mode, setMode] = useState("login");
@@ -59,124 +58,189 @@ export default function SignUp() {
   }
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f2f4f7",
-        padding: "32px",
-      }}
-    >
-      <section
-        style={{
-          maxWidth: "520px",
-          margin: "0 auto",
-          borderRadius: "28px",
-          padding: "32px",
-          boxShadow: "0 14px 34px rgba(0,0,0,0.08)",
-        }}
-      >
-        <h1 style={{ marginTop: 0, fontSize: "2.5rem" }}>
-          {mode === "login" ? "Log In" : "Sign Up"}
-        </h1>
-
-        <p style={{ color: "#666", marginBottom: "20px" }}>
-          Default account: test@email.com / pw
-        </p>
-
-        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-          <button
-            type="button"
-            onClick={() => setMode("login")}
-            style={mode === "login" ? activeTab : tab}
+    <main className="site-page">
+      <section className="site-container" style={{ maxWidth: "620px" }}>
+        <section style={{ marginBottom: "28px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "16px",
+              flexWrap: "wrap",
+            }}
           >
-            Log In
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("signup")}
-            style={mode === "signup" ? activeTab : tab}
-          >
-            Sign Up
-          </button>
-        </div>
+            <div>
+              <h1
+                style={{
+                  fontSize: "3.5rem",
+                  margin: 0,
+                  color: "#1f1f1f",
+                  letterSpacing: "-1px",
+                }}
+              >
+                {mode === "login" ? "Log In" : "Sign Up"}
+              </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-        >
-          {mode === "signup" && (
+              <p
+                style={{
+                  marginTop: "10px",
+                  marginBottom: 0,
+                  color: "#666",
+                  fontSize: "1.1rem",
+                }}
+              >
+                Access your digital closet and generate personalized looks.
+              </p>
+            </div>
+
+            <div className="kicker-pill">FitMatch</div>
+          </div>
+        </section>
+
+        <section className="section-card">
+          <div
+            style={{
+              marginBottom: "22px",
+              padding: "18px 20px",
+              borderRadius: "22px",
+              background: "#f4f1ed",
+              border: "1px solid #e6e0d9",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                color: "#1f57b8",
+                fontSize: "0.92rem",
+                fontWeight: "800",
+                letterSpacing: "0.04em",
+              }}
+            >
+              DEMO ACCOUNT
+            </p>
+
+            <p
+              style={{
+                margin: "8px 0 0 0",
+                color: "#444",
+                lineHeight: 1.6,
+              }}
+            >
+              Use <strong>test@email.com</strong> with password{" "}
+              <strong>pw</strong>
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginBottom: "22px",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setMode("login")}
+              style={mode === "login" ? activeTab : tab}
+            >
+              Log In
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMode("signup")}
+              style={mode === "signup" ? activeTab : tab}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "14px",
+            }}
+          >
+            {mode === "signup" && (
+              <input
+                name="username"
+                placeholder="Username"
+                value={form.username}
+                onChange={handleChange}
+                required
+                className="field"
+              />
+            )}
+
             <input
-              name="username"
-              placeholder="Username"
-              value={form.username}
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={form.email}
               onChange={handleChange}
               required
-              style={inputStyle}
+              className="field"
             />
-          )}
 
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            style={inputStyle}
-          />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="field"
+            />
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            style={inputStyle}
-          />
+            <button
+              type="submit"
+              className="primary-pill"
+              style={{
+                marginTop: "6px",
+                padding: "14px 18px",
+                fontSize: "1rem",
+              }}
+            >
+              {mode === "login" ? "Log In" : "Create Account"}
+            </button>
+          </form>
 
-          <button type="submit" style={primaryButton}>
-            {mode === "login" ? "Log In" : "Create Account"}
-          </button>
-        </form>
+          {message ? (
+            <div
+              style={{
+                marginTop: "18px",
+                background: "#fbeaea",
+                color: "#9f2d2d",
+                borderRadius: "16px",
+                padding: "14px 16px",
+              }}
+            >
+              {message}
+            </div>
+          ) : null}
+        </section>
 
-        {message && (
-          <p style={{ marginTop: "16px", color: "#c0392b" }}>{message}</p>
-        )}
+        <footer className="footer">
+          <span style={{ color: "#1f57b8", fontWeight: "700" }}>FitMatch</span>
+          {" • "}CS 341{" • "}Samantha Robinson
+        </footer>
       </section>
     </main>
   );
 }
 
-const inputStyle = {
-  width: "100%",
-  border: "1px solid #ddd6ce",
-  borderRadius: "14px",
-  padding: "12px 14px",
-  fontSize: "0.95rem",
-  background: "#fff",
-  boxSizing: "border-box",
-};
-
-const primaryButton = {
-  border: "none",
-  borderRadius: "999px",
-  padding: "12px 18px",
-  background: "#1f1f1f",
-  color: "#fff",
-  fontSize: "0.95rem",
-  fontWeight: "600",
-  cursor: "pointer",
-};
-
 const tab = {
   flex: 1,
   border: "none",
   borderRadius: "999px",
-  padding: "10px 14px",
+  padding: "12px 14px",
   background: "#ece7e2",
   color: "#222",
   cursor: "pointer",
+  fontWeight: "700",
 };
 
 const activeTab = {
