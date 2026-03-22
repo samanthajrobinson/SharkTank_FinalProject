@@ -194,7 +194,7 @@ export default function Profile() {
                           left: "50%",
                           transform: "translateX(-50%)",
                           width: "240px",
-                          height: "400px",
+                          height: "350px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
