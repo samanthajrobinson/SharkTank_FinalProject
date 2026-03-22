@@ -76,66 +76,74 @@ export default function Profile() {
   return (
     <main className="site-page">
       <div className="site-container">
-        <section className="hero-card">
-          <div
+        <section style={{ marginBottom: "28px" }}>
+          <h1
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: "16px",
-              flexWrap: "wrap",
+              fontSize: "3.5rem",
+              margin: 0,
+              color: "#1f1f1f",
+              letterSpacing: "-1px",
             }}
           >
-            <div>
-              <h1 className="hero-title" style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}>
-                Profile
-              </h1>
-              <p className="hero-text">
-                Your saved favorite outfits, curated from your personal closet.
-              </p>
-            </div>
+            Your Profile
+          </h1>
 
-            <div className="kicker-pill">
-              {favoriteOutfits.length} saved look
-              {favoriteOutfits.length === 1 ? "" : "s"}
-            </div>
-          </div>
+          <p
+            style={{
+              marginTop: "10px",
+              marginBottom: 0,
+              color: "#666",
+              fontSize: "1.1rem",
+            }}
+          >
+            View and manage your favorited outfits.
+          </p>
         </section>
+
+        {message ? <div className="status-error">{message}</div> : null}
 
         <section className="section-card">
           <div className="section-header">
             <div>
               <h2 className="section-title">Saved Looks</h2>
               <p className="section-subtext">
-                Manage your favorited outfits and remove looks you no longer want
-                to keep.
+                Your saved favorite outfits.
               </p>
             </div>
-          </div>
 
-          {message ? <div className="status-error">{message}</div> : null}
+            <span className="section-subtext">
+              {favoriteOutfits.length} saved look
+              {favoriteOutfits.length === 1 ? "" : "s"}
+            </span>
+          </div>
 
           {favoriteOutfits.length === 0 ? (
             <div className="empty-state">No favorite outfits saved yet.</div>
           ) : (
             <div className="cards-grid">
               {favoriteOutfits.map((outfit, index) => (
-                <article key={outfit._id || index} className="editorial-card">
-                  <div className="editorial-card-header">
-                    <div>
-                      <h2 className="editorial-card-title">
-                        {outfit.name || `Saved Look ${index + 1}`}
-                      </h2>
-                      <p
-                        style={{
-                          margin: "6px 0 0 0",
-                          color: "#777",
-                          fontSize: "0.95rem",
-                        }}
-                      >
-                        Favorited outfit
-                      </p>
-                    </div>
+                <article
+                  key={outfit._id || index}
+                  className="editorial-card"
+                  style={{
+                    padding: "16px",
+                  }}
+                >
+                  <div
+                    className="editorial-card-header"
+                    style={{
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <h2
+                      className="editorial-card-title"
+                      style={{
+                        fontSize: "1.5rem",
+                        margin: 0,
+                      }}
+                    >
+                      {outfit.name || `Saved Look ${index + 1}`}
+                    </h2>
 
                     <button
                       onClick={() => removeFavorite(outfit)}
@@ -146,18 +154,102 @@ export default function Profile() {
                     </button>
                   </div>
 
-                  <div className="outfit-editorial-grid">
-                    <OutfitPiece label="Top" item={outfit.top} type="top" hero />
-                    <OutfitPiece
-                      label="Bottom"
-                      item={outfit.bottom}
-                      type="bottom"
-                    />
-                    <OutfitPiece
-                      label="Shoes"
-                      item={outfit.shoes}
-                      type="shoes"
-                    />
+                  <div
+                    style={{
+                      background: "#f3f1ee",
+                      borderRadius: "24px",
+                      padding: "16px",
+                      minHeight: "560px",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {outfit.top && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "82%",
+                          height: "220px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          zIndex: 2,
+                        }}
+                      >
+                        <img
+                          src={outfit.top.image}
+                          alt=""
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            objectFit: "contain",
+                            display: "block",
+                            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {outfit.bottom && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "190px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "68%",
+                          height: "240px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          zIndex: 1,
+                        }}
+                      >
+                        <img
+                          src={outfit.bottom.image}
+                          alt=""
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            objectFit: "contain",
+                            display: "block",
+                            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {outfit.shoes && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "12px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "42%",
+                          height: "110px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          zIndex: 2,
+                        }}
+                      >
+                        <img
+                          src={outfit.shoes.image}
+                          alt=""
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            objectFit: "contain",
+                            display: "block",
+                            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </article>
               ))}
@@ -170,50 +262,5 @@ export default function Profile() {
         </footer>
       </div>
     </main>
-  );
-}
-
-function OutfitPiece({ label, item, type, hero = false }) {
-  const imageStyleByType = {
-    top: { maxWidth: "72%", maxHeight: "220px" },
-    bottom: { maxWidth: "62%", maxHeight: "220px" },
-    shoes: { maxWidth: "72%", maxHeight: "120px" },
-  };
-
-  const imageStyle = imageStyleByType[type] || {
-    maxWidth: "70%",
-    maxHeight: "180px",
-  };
-
-  return (
-    <section className={`piece-card ${hero ? "hero-piece" : ""}`}>
-      <div className="piece-label">{label}</div>
-
-      <div
-        className="piece-image-box"
-        style={{
-          minHeight: type === "shoes" ? "180px" : "300px",
-        }}
-      >
-        {item?.image ? (
-          <img
-            src={item.image}
-            alt={item?.name || label}
-            style={{
-              ...imageStyle,
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-              display: "block",
-              filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.10))",
-            }}
-          />
-        ) : (
-          <div style={{ color: "#999" }}>Missing item</div>
-        )}
-      </div>
-
-      <p className="piece-name">{item?.name || "Unnamed item"}</p>
-    </section>
   );
 }
