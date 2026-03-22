@@ -201,7 +201,8 @@ export default function Generator() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gridTemplateColumns: "repeat(3, 380px)",
+                justifyContent: "center",
                 gap: "20px",
               }}
             >
@@ -250,7 +251,8 @@ export default function Generator() {
                         background: "#f3f1ee",
                         borderRadius: "24px",
                         padding: "16px",
-                        minHeight: "560px",
+                        width: "380px",
+                        height: "600px",
                         position: "relative",
                         overflow: "hidden",
                       }}
@@ -262,7 +264,7 @@ export default function Generator() {
                             top: "10px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "82%",
+                            width: "300px%",
                             height: "220px",
                             display: "flex",
                             alignItems: "center",
@@ -274,8 +276,8 @@ export default function Generator() {
                             src={outfit.top.image}
                             alt=""
                             style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
+                              width: "100%",
+                              height: "100%",
                               objectFit: "contain",
                               display: "block",
                               filter:
@@ -292,7 +294,7 @@ export default function Generator() {
                             top: "190px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "68%",
+                            width: "82%",
                             height: "300px",
                             display: "flex",
                             alignItems: "center",
@@ -304,8 +306,8 @@ export default function Generator() {
                             src={outfit.bottom.image}
                             alt=""
                             style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
+                              width: "100%",
+                              height: "100%",
                               objectFit: "contain",
                               display: "block",
                               filter:
@@ -322,7 +324,7 @@ export default function Generator() {
                             bottom: "12px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "42%",
+                            width: "160px",
                             height: "110px",
                             display: "flex",
                             alignItems: "center",
@@ -334,8 +336,8 @@ export default function Generator() {
                             src={outfit.shoes.image}
                             alt=""
                             style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
+                              width: "100%",
+                              height: "100%",
                               objectFit: "contain",
                               display: "block",
                               filter:
