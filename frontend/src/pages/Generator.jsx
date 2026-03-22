@@ -351,7 +351,7 @@ export default function Generator() {
                         <div
                           style={{
                             position: "absolute",
-                            bottom: "12px",
+                            top: "400px",
                             left: "50%",
                             transform: "translateX(-50%)",
                             width: "160px",
