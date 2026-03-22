@@ -159,11 +159,11 @@ export default function Generator() {
 
   return (
     <main className="site-page">
-      <div className="site-container">
+      <section className="site-container">
         <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
-              fontSize: "2.4rem",
+              fontSize: "3.5rem",
               margin: 0,
               color: "#1f1f1f",
               letterSpacing: "-1px",
@@ -174,7 +174,7 @@ export default function Generator() {
 
           <p
             style={{
-              marginTop: "8px",
+              marginTop: "10px",
               marginBottom: 0,
               color: "#666",
               fontSize: "1.1rem",
@@ -186,9 +186,42 @@ export default function Generator() {
 
         <section className="section-card">
           <div className="section-header">
-            <button className="primary-pill" onClick={generateMultipleOutfits}>
-              Regenerate Looks
-            </button>
+            <div>
+              <h2
+                className="section-title"
+                style={{
+                  fontSize: "2rem",
+                }}
+              >
+                Generated Looks
+              </h2>
+              <p className="section-subtext">
+                Save your favorites to your profile and community feed.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "14px",
+                flexWrap: "wrap",
+              }}
+            >
+              <span
+                style={{
+                  color: "#1f57b8",
+                  fontSize: "1rem",
+                  fontWeight: "700",
+                }}
+              >
+                {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}
+              </span>
+
+              <button className="primary-pill" onClick={generateMultipleOutfits}>
+                Regenerate Looks
+              </button>
+            </div>
           </div>
 
           {loading && <div className="empty-state">Generating outfits...</div>}
@@ -198,21 +231,14 @@ export default function Generator() {
           )}
 
           {!loading && !errorMessage && outfits.length > 0 && (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, 380px)",
-                justifyContent: "center",
-                gap: "20px",
-              }}
-            >
+            <div className="generator-grid">
               {outfits.map((outfit, index) => {
                 const favorited = isFavorited(outfit);
 
                 return (
                   <article
                     key={getOutfitSignature(outfit) + index}
-                    className="editorial-card"
+                    className="editorial-card fixed-outfit-card"
                     style={{
                       padding: "14px",
                     }}
@@ -234,6 +260,7 @@ export default function Generator() {
                       </h2>
 
                       <button
+                        type="button"
                         onClick={() => toggleFavorite(outfit)}
                         aria-label={
                           favorited
@@ -251,7 +278,7 @@ export default function Generator() {
                         background: "#f3f1ee",
                         borderRadius: "24px",
                         padding: "16px",
-                        width: "380px",
+                        width: "100%",
                         height: "600px",
                         position: "relative",
                         overflow: "hidden",
@@ -264,7 +291,7 @@ export default function Generator() {
                             top: "10px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "300px%",
+                            width: "300px",
                             height: "220px",
                             display: "flex",
                             alignItems: "center",
@@ -276,8 +303,8 @@ export default function Generator() {
                             src={outfit.top.image}
                             alt=""
                             style={{
-                              width: "100%",
-                              height: "100%",
+                              width: "300px",
+                              height: "220px",
                               objectFit: "contain",
                               display: "block",
                               filter:
@@ -294,8 +321,8 @@ export default function Generator() {
                             top: "190px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "82%",
-                            height: "350px",
+                            width: "240px",
+                            height: "220px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -306,8 +333,8 @@ export default function Generator() {
                             src={outfit.bottom.image}
                             alt=""
                             style={{
-                              width: "100%",
-                              height: "100%",
+                              width: "240px",
+                              height: "220px",
                               objectFit: "contain",
                               display: "block",
                               filter:
@@ -325,7 +352,7 @@ export default function Generator() {
                             left: "50%",
                             transform: "translateX(-50%)",
                             width: "160px",
-                            height: "110px",
+                            height: "90px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -336,8 +363,8 @@ export default function Generator() {
                             src={outfit.shoes.image}
                             alt=""
                             style={{
-                              width: "100%",
-                              height: "100%",
+                              width: "160px",
+                              height: "90px",
                               objectFit: "contain",
                               display: "block",
                               filter:
@@ -359,9 +386,10 @@ export default function Generator() {
         </section>
 
         <footer className="footer">
-          FitMatch • CS 341 • Samantha Robinson
+          <span style={{ color: "#1f57b8", fontWeight: "700" }}>FitMatch</span>
+          {" • "}CS 341{" • "}Samantha Robinson
         </footer>
-      </div>
+      </section>
     </main>
   );
 }
