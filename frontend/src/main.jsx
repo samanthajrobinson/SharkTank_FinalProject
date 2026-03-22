@@ -6,11 +6,10 @@ import "./styles.css";
 import { Analytics } from "@vercel/analytics/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <FavoritesProvider>
-    <App />
-  </FavoritesProvider>,
   <React.StrictMode>
-    <App />
+    <FavoritesProvider>
+      <App />
+    </FavoritesProvider>
     <Analytics />
   </React.StrictMode>
 );
