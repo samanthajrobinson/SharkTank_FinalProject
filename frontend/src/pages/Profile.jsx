@@ -103,6 +103,13 @@ export default function Profile() {
         {message ? <div className="status-error">{message}</div> : null}
 
         <section className="section-card">
+          <div className="section-header">
+            <span className="section-subtext">
+              {favoriteOutfits.length} saved look
+              {favoriteOutfits.length === 1 ? "" : "s"}
+            </span>
+          </div>
+
           {favoriteOutfits.length === 0 ? (
             <div className="empty-state">No favorite outfits saved yet.</div>
           ) : (
