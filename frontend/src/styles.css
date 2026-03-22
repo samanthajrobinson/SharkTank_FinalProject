@@ -122,7 +122,6 @@ body {
 }
 
 .section-card {
-  background: "#ffffff";
   border-radius: 28px;
   padding: 28px;
   box-shadow: var(--shadow);

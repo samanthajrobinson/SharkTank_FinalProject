@@ -62,7 +62,7 @@ export default function SignUp() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#235dca",
+        background: "#f2f4f7",
         padding: "32px",
       }}
     >
@@ -70,7 +70,6 @@ export default function SignUp() {
         style={{
           maxWidth: "520px",
           margin: "0 auto",
-          background: "#fff",
           borderRadius: "28px",
           padding: "32px",
           boxShadow: "0 14px 34px rgba(0,0,0,0.08)",
