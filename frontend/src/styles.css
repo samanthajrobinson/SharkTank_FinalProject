@@ -310,3 +310,15 @@ input[type="file"] {
     font-size: 3.2rem;
   }
 }
+
+@media (max-width: 1100px) {
+  .generator-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .generator-grid {
+    grid-template-columns: 1fr;
+  }
+}

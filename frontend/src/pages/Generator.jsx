@@ -172,12 +172,14 @@ export default function Generator() {
             }}
           >
             <div>
-              <h1 className="hero-title" style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}>
+              <h1
+                className="hero-title"
+                style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
+              >
                 Generator
               </h1>
               <p className="hero-text">
-                Curated looks generated from your own closet, with favorites saved
-                directly to your profile and community feed.
+                Curated looks generated from your own closet.
               </p>
             </div>
 
@@ -192,7 +194,7 @@ export default function Generator() {
             <div>
               <h2 className="section-title">Outfit Generator</h2>
               <p className="section-subtext">
-                Generate styled looks using your uploaded tops, bottoms, and shoes.
+                Generate three styled looks from your uploaded closet.
               </p>
             </div>
 
@@ -201,16 +203,20 @@ export default function Generator() {
             </button>
           </div>
 
-          {loading && (
-            <div className="empty-state">Generating outfits...</div>
-          )}
+          {loading && <div className="empty-state">Generating outfits...</div>}
 
           {!loading && errorMessage && (
             <div className="status-error">{errorMessage}</div>
           )}
 
           {!loading && !errorMessage && outfits.length > 0 && (
-            <div className="cards-grid">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: "20px",
+              }}
+            >
               {outfits.map((outfit, index) => {
                 const favorited = isFavorited(outfit);
 
@@ -218,22 +224,25 @@ export default function Generator() {
                   <article
                     key={getOutfitSignature(outfit) + index}
                     className="editorial-card"
+                    style={{
+                      padding: "14px",
+                    }}
                   >
-                    <div className="editorial-card-header">
-                      <div>
-                        <h2 className="editorial-card-title">
-                          Look {index + 1}
-                        </h2>
-                        <p
-                          style={{
-                            margin: "6px 0 0 0",
-                            color: "#777",
-                            fontSize: "0.95rem",
-                          }}
-                        >
-                          Generated from your closet
-                        </p>
-                      </div>
+                    <div
+                      className="editorial-card-header"
+                      style={{
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <h2
+                        className="editorial-card-title"
+                        style={{
+                          fontSize: "1.4rem",
+                          margin: 0,
+                        }}
+                      >
+                        Look {index + 1}
+                      </h2>
 
                       <button
                         onClick={() => toggleFavorite(outfit)}
@@ -248,23 +257,102 @@ export default function Generator() {
                       </button>
                     </div>
 
-                    <div className="outfit-editorial-grid">
-                      <OutfitPiece
-                        label="Top"
-                        item={outfit.top}
-                        type="top"
-                        hero
-                      />
-                      <OutfitPiece
-                        label="Bottom"
-                        item={outfit.bottom}
-                        type="bottom"
-                      />
-                      <OutfitPiece
-                        label="Shoes"
-                        item={outfit.shoes}
-                        type="shoes"
-                      />
+                    <div
+                      style={{
+                        background: "#f3f1ee",
+                        borderRadius: "24px",
+                        padding: "16px",
+                        minHeight: "560px",
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {outfit.top && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "10px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "82%",
+                            height: "220px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 2,
+                          }}
+                        >
+                          <img
+                            src={outfit.top.image}
+                            alt=""
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "contain",
+                              display: "block",
+                              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {outfit.bottom && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "190px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "68%",
+                            height: "240px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 1,
+                          }}
+                        >
+                          <img
+                            src={outfit.bottom.image}
+                            alt=""
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "contain",
+                              display: "block",
+                              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {outfit.shoes && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "12px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "42%",
+                            height: "110px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 2,
+                          }}
+                        >
+                          <img
+                            src={outfit.shoes.image}
+                            alt=""
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "contain",
+                              display: "block",
+                              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </article>
                 );
@@ -273,9 +361,7 @@ export default function Generator() {
           )}
 
           {!loading && !errorMessage && outfits.length === 0 && (
-            <div className="empty-state">
-              No outfits generated yet.
-            </div>
+            <div className="empty-state">No outfits generated yet.</div>
           )}
         </section>
 
@@ -284,50 +370,5 @@ export default function Generator() {
         </footer>
       </div>
     </main>
-  );
-}
-
-function OutfitPiece({ label, item, type, hero = false }) {
-  const imageStyleByType = {
-    top: { maxWidth: "72%", maxHeight: "220px" },
-    bottom: { maxWidth: "62%", maxHeight: "220px" },
-    shoes: { maxWidth: "72%", maxHeight: "120px" },
-  };
-
-  const imageStyle = imageStyleByType[type] || {
-    maxWidth: "70%",
-    maxHeight: "180px",
-  };
-
-  return (
-    <section className={`piece-card ${hero ? "hero-piece" : ""}`}>
-      <div className="piece-label">{label}</div>
-
-      <div
-        className="piece-image-box"
-        style={{
-          minHeight: type === "shoes" ? "180px" : "300px",
-        }}
-      >
-        {item?.image ? (
-          <img
-            src={item.image}
-            alt={item?.name || label}
-            style={{
-              ...imageStyle,
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-              display: "block",
-              filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.10))",
-            }}
-          />
-        ) : (
-          <div style={{ color: "#999" }}>Missing item</div>
-        )}
-      </div>
-
-      <p className="piece-name">{item?.name || "Unnamed item"}</p>
-    </section>
   );
 }
