@@ -65,7 +65,7 @@ export default function Home() {
                   letterSpacing: "-1px",
                 }}
               >
-                Home
+                FitMatch
               </h1>
 
               <p
