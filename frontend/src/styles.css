@@ -329,6 +329,16 @@ textarea {
   background: #fff;
 }
 
+.field2 {
+  width: "100%";
+  border: "1px solid #ddd6ce";
+  borderRadius: "14px";
+  padding: "12px 14px";
+  fontSize: "0.95rem";
+  background: "#fff";
+  boxSizing: "border-box";
+}
+
 input[type="file"] {
   border: 1px solid var(--border);
   border-radius: 12px;

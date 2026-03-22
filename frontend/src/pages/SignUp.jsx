@@ -171,7 +171,7 @@ export default function SignUp() {
                 value={form.username}
                 onChange={handleChange}
                 required
-                className="field"
+                className="field2"
               />
             )}
 
@@ -182,7 +182,7 @@ export default function SignUp() {
               value={form.email}
               onChange={handleChange}
               required
-              className="field"
+              className="field2"
             />
 
             <input
@@ -192,7 +192,7 @@ export default function SignUp() {
               value={form.password}
               onChange={handleChange}
               required
-              className="field"
+              className="field2"
             />
 
             <button
