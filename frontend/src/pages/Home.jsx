@@ -1,10 +1,149 @@
 import React, { useEffect, useState } from "react";
+import { getUser } from "../auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+const user = getUser();
+const isLoggedIn = Boolean(user);
 
 export default function Home() {
   const [favoriteOutfits, setFavoriteOutfits] = useState([]);
   const [message, setMessage] = useState("");
+
+  {!isLoggedIn && (
+    <section className="section-card">
+      <div className="section-header">
+        <div>
+          <h2 className="section-title">Why FitMatch</h2>
+          <p className="section-subtext">
+            A smarter way to organize your closet and generate outfits.
+          </p>
+        </div>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, 380px)",
+          justifyContent: "center",
+          gap: "20px",
+        }}
+      >
+        <article
+          style={{
+            background: "#f4f1ed",
+            borderRadius: "22px",
+            padding: "22px",
+            border: "1px solid #e6e0d9",
+          }}
+        >
+          <div
+            style={{
+              color: "#1f57b8",
+              fontSize: "0.95rem",
+              fontWeight: "800",
+              marginBottom: "10px",
+              letterSpacing: "0.04em",
+            }}
+          >
+            DIGITAL CLOSET
+          </div>
+          <p
+            style={{
+              margin: 0,
+              color: "#444",
+              lineHeight: 1.6,
+            }}
+          >
+            Upload your tops, bottoms, and shoes into one organized space.
+          </p>
+        </article>
+
+        <article
+          style={{
+            background: "#f4f1ed",
+            borderRadius: "22px",
+            padding: "22px",
+            border: "1px solid #e6e0d9",
+          }}
+        >
+          <div
+            style={{
+              color: "#1f57b8",
+              fontSize: "0.95rem",
+              fontWeight: "800",
+              marginBottom: "10px",
+              letterSpacing: "0.04em",
+            }}
+          >
+            OUTFIT GENERATION
+          </div>
+          <p
+            style={{
+              margin: 0,
+              color: "#444",
+              lineHeight: 1.6,
+            }}
+          >
+            Instantly generate complete looks using your own uploaded pieces.
+          </p>
+        </article>
+
+        <article
+          style={{
+            background: "#f4f1ed",
+            borderRadius: "22px",
+            padding: "22px",
+            border: "1px solid #e6e0d9",
+          }}
+        >
+          <div
+            style={{
+              color: "#1f57b8",
+              fontSize: "0.95rem",
+              fontWeight: "800",
+              marginBottom: "10px",
+              letterSpacing: "0.04em",
+            }}
+          >
+            COMMUNITY FEED
+          </div>
+          <p
+            style={{
+              margin: 0,
+              color: "#444",
+              lineHeight: 1.6,
+            }}
+          >
+            Explore favorited outfits from other users for inspiration.
+          </p>
+        </article>
+      </div>
+    </section>
+    <section className="section-card">
+      <div className="section-header">
+        <div>
+          <h2 className="section-title">FitMatch in Action</h2>
+          <p className="section-subtext">
+            Watch a quick demo of uploading clothes, generating outfits, and saving favorites.
+          </p>
+        </div>
+      </div>
+
+      <video
+        controls
+        width="100%"
+        style={{
+          borderRadius: "24px",
+          display: "block",
+          width: "100%",
+          background: "#000",
+        }}
+      >
+        <source src="/demo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </section>
+  )}
 
   useEffect(() => {
     loadFavorites();
@@ -53,116 +192,6 @@ export default function Home() {
             }}
           >
 
-        </section>
-
-        <section className="section-card">
-          <div className="section-header">
-            <div>
-              <h2 className="section-title">Why FitMatch</h2>
-              <p className="section-subtext">
-                A smarter way to organize your closet and generate outfits.
-              </p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, 380px)",
-              justifyContent: "center",
-              gap: "20px",
-            }}
-          >
-            <article
-              style={{
-                background: "#f4f1ed",
-                borderRadius: "22px",
-                padding: "22px",
-                border: "1px solid #e6e0d9",
-              }}
-            >
-              <div
-                style={{
-                  color: "#1f57b8",
-                  fontSize: "0.95rem",
-                  fontWeight: "800",
-                  marginBottom: "10px",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                DIGITAL CLOSET
-              </div>
-              <p
-                style={{
-                  margin: 0,
-                  color: "#444",
-                  lineHeight: 1.6,
-                }}
-              >
-                Upload your tops, bottoms, and shoes into one organized space.
-              </p>
-            </article>
-
-            <article
-              style={{
-                background: "#f4f1ed",
-                borderRadius: "22px",
-                padding: "22px",
-                border: "1px solid #e6e0d9",
-              }}
-            >
-              <div
-                style={{
-                  color: "#1f57b8",
-                  fontSize: "0.95rem",
-                  fontWeight: "800",
-                  marginBottom: "10px",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                OUTFIT GENERATION
-              </div>
-              <p
-                style={{
-                  margin: 0,
-                  color: "#444",
-                  lineHeight: 1.6,
-                }}
-              >
-                Instantly generate complete looks using your own uploaded pieces.
-              </p>
-            </article>
-
-            <article
-              style={{
-                background: "#f4f1ed",
-                borderRadius: "22px",
-                padding: "22px",
-                border: "1px solid #e6e0d9",
-              }}
-            >
-              <div
-                style={{
-                  color: "#1f57b8",
-                  fontSize: "0.95rem",
-                  fontWeight: "800",
-                  marginBottom: "10px",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                COMMUNITY FEED
-              </div>
-              <p
-                style={{
-                  margin: 0,
-                  color: "#444",
-                  lineHeight: 1.6,
-                }}
-              >
-                Explore favorited outfits from other users for inspiration.
-              </p>
-            </article>
-          </div>
         </section>
 
         {message ? <div className="status-error">{message}</div> : null}
@@ -306,7 +335,7 @@ function FavoriteOutfitCard({ outfit, index }) {
               left: "50%",
               transform: "translateX(-50%)",
               width: "240px",
-              height: "400px",
+              height: "350px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
