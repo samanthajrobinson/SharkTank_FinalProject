@@ -62,7 +62,7 @@ export default function SignUp() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#f7f5f2",
+        background: "#235dca",
         padding: "32px",
       }}
     >
