@@ -59,7 +59,7 @@ export default function Home() {
             <div>
               <h1
                 style={{
-                  fontSize: "2.4rem",
+                  fontSize: "3.2rem",
                   margin: 0,
                   color: "#1f1f1f",
                   letterSpacing: "-1px",
@@ -77,8 +77,8 @@ export default function Home() {
                   maxWidth: "720px",
                 }}
               >
-                Browse community favorite outfits from all users and get inspired
-                by saved looks across FitMatch.
+                Browse community favorite outfits from all users and get
+                inspired by saved looks across FitMatch.
               </p>
             </div>
 
@@ -374,11 +374,11 @@ function FavoriteOutfitCard({ outfit, index }) {
           <div
             style={{
               position: "absolute",
-              top: "190px",
+              top: "170px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "240px",
-              height: "220px",
+              width: "280px", 
+              height: "260px", 
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -389,8 +389,8 @@ function FavoriteOutfitCard({ outfit, index }) {
               src={outfit.bottom.image}
               alt=""
               style={{
-                width: "240px",
-                height: "220px",
+                width: "280px",
+                height: "260px",
                 objectFit: "contain",
                 display: "block",
                 filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",

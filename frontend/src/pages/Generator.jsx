@@ -163,7 +163,7 @@ export default function Generator() {
         <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
-              fontSize: "2.4rem",
+              fontSize: "3.2rem",
               margin: 0,
               color: "#1f1f1f",
               letterSpacing: "-1px",
@@ -218,7 +218,10 @@ export default function Generator() {
                 {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}
               </span>
 
-              <button className="primary-pill" onClick={generateMultipleOutfits}>
+              <button
+                className="primary-pill"
+                onClick={generateMultipleOutfits}
+              >
                 Regenerate Looks
               </button>
             </div>
@@ -318,11 +321,11 @@ export default function Generator() {
                         <div
                           style={{
                             position: "absolute",
-                            top: "190px",
+                            top: "170px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "240px",
-                            height: "220px",
+                            width: "280px",
+                            height: "260px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -333,8 +336,8 @@ export default function Generator() {
                             src={outfit.bottom.image}
                             alt=""
                             style={{
-                              width: "240px",
-                              height: "220px",
+                              width: "280px",
+                              height: "260px",
                               objectFit: "contain",
                               display: "block",
                               filter:

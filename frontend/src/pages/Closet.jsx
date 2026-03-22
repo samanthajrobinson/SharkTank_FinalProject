@@ -180,7 +180,7 @@ export default function Closet() {
         <section style={{ marginBottom: "28px" }}>
           <h1
             style={{
-              fontSize: "3.5rem",
+              fontSize: "3.2rem",
               margin: 0,
               color: "#1f1f1f",
               letterSpacing: "-1px",
