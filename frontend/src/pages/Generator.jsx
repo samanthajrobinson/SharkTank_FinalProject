@@ -182,15 +182,14 @@ export default function Generator() {
           >
             Generate curated looks from your closet.
           </p>
-        </section>
-
-        <section className="section-card">
           <div className="section-header">
             <button className="primary-pill" onClick={generateMultipleOutfits}>
               Regenerate Looks
             </button>
           </div>
+        </section>
 
+        <section className="section-card">
           {loading && <div className="empty-state">Generating outfits...</div>}
 
           {!loading && errorMessage && (
