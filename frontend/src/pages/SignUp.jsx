@@ -108,28 +108,6 @@ export default function SignUp() {
               border: "1px solid #e6e0d9",
             }}
           >
-            <p
-              style={{
-                margin: 0,
-                color: "#1f57b8",
-                fontSize: "0.92rem",
-                fontWeight: "800",
-                letterSpacing: "0.04em",
-              }}
-            >
-              DEMO ACCOUNT
-            </p>
-
-            <p
-              style={{
-                margin: "8px 0 0 0",
-                color: "#444",
-                lineHeight: 1.6,
-              }}
-            >
-              Use <strong>test@email.com</strong> with password{" "}
-              <strong>pw</strong>
-            </p>
           </div>
 
           <div
