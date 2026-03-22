@@ -224,9 +224,9 @@ textarea {
 /* Generator-specific fixed grid */
 .generator-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 330px);
+  grid-template-columns: repeat(4, 300px);
+  gap: 15px;
   justify-content: center;
-  gap: 18px;
 }
 
 /* Editorial cards */
