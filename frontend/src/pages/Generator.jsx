@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { authHeaders } from "../auth";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Generator() {
   const [outfits, setOutfits] = useState([]);
@@ -161,32 +160,28 @@ export default function Generator() {
   return (
     <main className="site-page">
       <div className="site-container">
-        <section className="hero-card">
-          <div
+        <section style={{ marginBottom: "28px" }}>
+          <h1
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: "16px",
-              flexWrap: "wrap",
+              fontSize: "3.5rem",
+              margin: 0,
+              color: "#1f1f1f",
+              letterSpacing: "-1px",
             }}
           >
-            <div>
-              <h1
-                className="hero-title"
-                style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
-              >
-                Generator
-              </h1>
-              <p className="hero-text">
-                Curated looks generated from your own closet.
-              </p>
-            </div>
+            Outfit Generator
+          </h1>
 
-            <div className="kicker-pill">
-              {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}
-            </div>
-          </div>
+          <p
+            style={{
+              marginTop: "10px",
+              marginBottom: 0,
+              color: "#666",
+              fontSize: "1.1rem",
+            }}
+          >
+            Generate curated looks from your closet.
+          </p>
         </section>
 
         <section className="section-card">
@@ -290,7 +285,8 @@ export default function Generator() {
                               maxHeight: "100%",
                               objectFit: "contain",
                               display: "block",
-                              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                              filter:
+                                "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
                             }}
                           />
                         </div>
@@ -319,7 +315,8 @@ export default function Generator() {
                               maxHeight: "100%",
                               objectFit: "contain",
                               display: "block",
-                              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                              filter:
+                                "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
                             }}
                           />
                         </div>
@@ -348,7 +345,8 @@ export default function Generator() {
                               maxHeight: "100%",
                               objectFit: "contain",
                               display: "block",
-                              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+                              filter:
+                                "drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
                             }}
                           />
                         </div>
