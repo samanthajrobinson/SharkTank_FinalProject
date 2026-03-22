@@ -90,44 +90,6 @@ export default function Home() {
           </div>
         </section>
 
-        {message ? <div className="status-error">{message}</div> : null}
-
-        <section className="section-card">
-          <div className="section-header">
-            <div>
-              <h2 className="section-title">Community Favorites</h2>
-              <p className="section-subtext">
-                Favorited outfits shared by FitMatch users.
-              </p>
-            </div>
-
-            <span
-              style={{
-                color: "#1f57b8",
-                fontSize: "1rem",
-                fontWeight: "700",
-              }}
-            >
-              {favoriteOutfits.length} saved look
-              {favoriteOutfits.length === 1 ? "" : "s"}
-            </span>
-          </div>
-
-          {favoriteOutfits.length === 0 ? (
-            <div className="empty-state">No favorite outfits yet.</div>
-          ) : (
-            <div className="cards-grid">
-              {favoriteOutfits.map((outfit, index) => (
-                <FavoriteOutfitCard
-                  key={outfit._id || index}
-                  outfit={outfit}
-                  index={index}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-
         <section className="section-card">
           <div className="section-header">
             <div>
@@ -237,6 +199,43 @@ export default function Home() {
           </div>
         </section>
 
+        {message ? <div className="status-error">{message}</div> : null}
+
+        <section className="section-card">
+          <div className="section-header">
+            <div>
+              <h2 className="section-title">Community Favorites</h2>
+              <p className="section-subtext">
+                Favorited outfits shared by FitMatch users.
+              </p>
+            </div>
+
+            <span
+              style={{
+                color: "#1f57b8",
+                fontSize: "1rem",
+                fontWeight: "700",
+              }}
+            >
+              {favoriteOutfits.length} saved look
+              {favoriteOutfits.length === 1 ? "" : "s"}
+            </span>
+          </div>
+
+          {favoriteOutfits.length === 0 ? (
+            <div className="empty-state">No favorite outfits yet.</div>
+          ) : (
+            <div className="cards-grid">
+              {favoriteOutfits.map((outfit, index) => (
+                <FavoriteOutfitCard
+                  key={outfit._id || index}
+                  outfit={outfit}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
+        </section>
         <footer className="footer">
           <span style={{ color: "#1f57b8", fontWeight: "700" }}>FitMatch</span>
           {" • "}CS 341{" • "}Samantha Robinson
