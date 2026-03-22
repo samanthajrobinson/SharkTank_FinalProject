@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { authHeaders } from "../auth";
+import { useFavorites } from "../context/FavoritesContext";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Profile() {
-  const [favoriteOutfits, setFavoriteOutfits] = useState([]);
+  const { favorites, setAllFavorites, removeFavoriteByOutfit } = useFavorites();
+  const favoriteOutfits = favorites;
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function Profile() {
 
       if (!res.ok) {
         setMessage(data.error || "Failed to load favorite outfits.");
-        setFavoriteOutfits([]);
+        setAllFavorites([]);
         return;
       }
 
@@ -33,16 +35,18 @@ export default function Profile() {
         (outfit) => outfit.favorite,
       );
 
-      setFavoriteOutfits(favoritesOnly);
+      setAllFavorites(favoritesOnly);
     } catch (error) {
       console.error("Failed to load favorite outfits:", error);
       setMessage("Failed to load favorite outfits.");
-      setFavoriteOutfits([]);
+      setAllFavorites([]);
     }
   }
 
   async function removeFavorite(outfitToRemove) {
     try {
+      setMessage("");
+
       const res = await fetch(`${API_BASE}/api/outfits/unfavorite`, {
         method: "POST",
         headers: {
@@ -63,9 +67,7 @@ export default function Profile() {
         return;
       }
 
-      setFavoriteOutfits((prev) =>
-        prev.filter((outfit) => outfit._id !== outfitToRemove._id),
-      );
+      removeFavoriteByOutfit(outfitToRemove);
     } catch (error) {
       console.error("Failed to remove favorite outfit:", error);
       setMessage("Failed to remove favorite outfit.");
@@ -128,7 +130,7 @@ export default function Profile() {
             <div className="fixed-outfit-grid">
               {favoriteOutfits.map((outfit, index) => (
                 <article
-                  key={outfit._id || index}
+                  key={outfit._id || outfit.favoriteId || index}
                   className="editorial-card fixed-outfit-card"
                   style={{
                     padding: "16px",

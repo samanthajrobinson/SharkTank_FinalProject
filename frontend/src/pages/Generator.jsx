@@ -1,13 +1,21 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { authHeaders } from "../auth";
+import { useFavorites } from "../context/FavoritesContext";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
 
 export default function Generator() {
   const [outfits, setOutfits] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [favoriteIds, setFavoriteIds] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const {
+    favorites,
+    addFavorite,
+    removeFavoriteByOutfit,
+    isFavorited,
+    setAllFavorites,
+  } = useFavorites();
 
   useEffect(() => {
     loadFavoriteIds();
@@ -39,19 +47,18 @@ export default function Generator() {
       const data = await res.json();
 
       if (!res.ok) {
-        setFavoriteIds([]);
+        setAllFavorites([]);
         return;
       }
 
-      const ids = (Array.isArray(data) ? data : [])
-        .filter((outfit) => outfit.favorite)
-        .map((outfit) => getOutfitSignature(outfit))
-        .filter(Boolean);
+      const favoritesOnly = (Array.isArray(data) ? data : []).filter(
+        (outfit) => outfit.favorite,
+      );
 
-      setFavoriteIds(ids);
+      setAllFavorites(favoritesOnly);
     } catch (error) {
       console.error("Failed to load favorites:", error);
-      setFavoriteIds([]);
+      setAllFavorites([]);
     }
   }
 
@@ -86,10 +93,6 @@ export default function Generator() {
     } finally {
       setLoading(false);
     }
-  }
-
-  function isFavorited(outfit) {
-    return favoriteIds.includes(getOutfitSignature(outfit));
   }
 
   async function saveFavoriteToDB(outfit) {
@@ -141,21 +144,19 @@ export default function Generator() {
 
   async function toggleFavorite(outfit) {
     try {
-      const signature = getOutfitSignature(outfit);
-
-      if (favoriteIds.includes(signature)) {
+      if (isFavorited(outfit)) {
         await removeFavoriteFromDB(outfit);
-        setFavoriteIds((prev) => prev.filter((id) => id !== signature));
+        removeFavoriteByOutfit(outfit);
       } else {
-        await saveFavoriteToDB(outfit);
-        setFavoriteIds((prev) => [...prev, signature]);
+        const saved = await saveFavoriteToDB(outfit);
+        addFavorite(saved);
       }
     } catch (error) {
       console.error("Failed to update favorite:", error);
     }
   }
 
-  const favoriteCount = useMemo(() => favoriteIds.length, [favoriteIds]);
+  const favoriteCount = useMemo(() => favorites.length, [favorites]);
 
   return (
     <main className="site-page">

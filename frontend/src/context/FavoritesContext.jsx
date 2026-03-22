@@ -2,6 +2,14 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 const FavoritesContext = createContext(null);
 
+function sameOutfit(a, b) {
+  return (
+    a?.top?._id === b?.top?._id &&
+    a?.bottom?._id === b?.bottom?._id &&
+    a?.shoes?._id === b?.shoes?._id
+  );
+}
+
 export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem("fitmatch_favorites");
@@ -13,12 +21,21 @@ export function FavoritesProvider({ children }) {
   }, [favorites]);
 
   function addFavorite(outfit) {
-    const favoriteOutfit = {
-      ...outfit,
-      favoriteId: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-    };
+    setFavorites((prev) => {
+      if (prev.some((fav) => sameOutfit(fav, outfit))) return prev;
 
-    setFavorites((prev) => [...prev, favoriteOutfit]);
+      return [
+        ...prev,
+        {
+          ...outfit,
+          favoriteId: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+        },
+      ];
+    });
+  }
+
+  function removeFavoriteByOutfit(outfit) {
+    setFavorites((prev) => prev.filter((fav) => !sameOutfit(fav, outfit)));
   }
 
   function removeFavorite(favoriteId) {
@@ -26,12 +43,11 @@ export function FavoritesProvider({ children }) {
   }
 
   function isFavorited(outfit) {
-    return favorites.some(
-      (fav) =>
-        fav.top?._id === outfit.top?._id &&
-        fav.bottom?._id === outfit.bottom?._id &&
-        fav.shoes?._id === outfit.shoes?._id,
-    );
+    return favorites.some((fav) => sameOutfit(fav, outfit));
+  }
+
+  function setAllFavorites(nextFavorites) {
+    setFavorites(Array.isArray(nextFavorites) ? nextFavorites : []);
   }
 
   return (
@@ -40,7 +56,9 @@ export function FavoritesProvider({ children }) {
         favorites,
         addFavorite,
         removeFavorite,
+        removeFavoriteByOutfit,
         isFavorited,
+        setAllFavorites,
       }}
     >
       {children}
@@ -49,5 +67,11 @@ export function FavoritesProvider({ children }) {
 }
 
 export function useFavorites() {
-  return useContext(FavoritesContext);
+  const context = useContext(FavoritesContext);
+
+  if (!context) {
+    throw new Error("useFavorites must be used inside FavoritesProvider");
+  }
+
+  return context;
 }
