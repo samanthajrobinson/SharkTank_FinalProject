@@ -77,8 +77,8 @@ export default function Home() {
                   maxWidth: "720px",
                 }}
               >
-                Browse community favorite outfits from all users and get inspired
-                by saved looks across FitMatch.
+                Browse community favorite outfits from all users and get
+                inspired by saved looks across FitMatch.
               </p>
             </div>
 
@@ -264,8 +264,8 @@ export default function Home() {
                     boxShadow: "0 10px 24px rgba(0,0,0,0.18)",
                   }}
                 >
-                  <source src="/demo.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
+                  <source src="/demo.mp4" type="video/mp4" /> Your browser does
+                  not support the video tag.
                 </video>
               </div>
             </section>
