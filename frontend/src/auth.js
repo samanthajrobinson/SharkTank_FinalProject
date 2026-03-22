@@ -6,8 +6,11 @@ export function getToken() {
 }
 
 export function getUser() {
-  const raw = localStorage.getItem(USER_KEY);
-  return raw ? JSON.parse(raw) : null;
+  try {
+    return JSON.parse(localStorage.getItem("fitmatch_user"));
+  } catch {
+    return null;
+  }
 }
 
 export function saveAuth(token, user) {
