@@ -212,13 +212,13 @@ textarea {
 
 .fixed-outfit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 330px);
+  grid-template-columns: repeat(4, 300px);
+  gap: 15px;
   justify-content: center;
-  gap: 18px;
 }
 
 .fixed-outfit-card {
-  width: 330px;
+  width: 300px;
 }
 
 /* Generator-specific fixed grid */
