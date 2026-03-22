@@ -345,22 +345,26 @@ input[type="file"] {
 }
 
 .closet-sidebar {
-  width: 100%;
-  min-width: 0;
+  width: 320px;
+  max-width: 320px;
+  min-width: 320px;
   background: #ffffff;
   border-radius: 24px;
   padding: 20px;
   box-shadow: var(--shadow-soft);
   position: sticky;
   top: 24px;
+  overflow: hidden;
 }
 
 .closet-panel {
   min-width: 0;
+  width: 100%;
   background: #ffffff;
   border-radius: 24px;
   padding: 20px;
   box-shadow: var(--shadow-soft);
+  overflow: hidden;
 }
 
 .closet-grid {
@@ -371,6 +375,7 @@ input[type="file"] {
 }
 
 .closet-card {
+  width: 380px;
   background: #f3f1ef;
   border-radius: 22px;
   padding: 16px;
@@ -382,6 +387,56 @@ input[type="file"] {
   flex-direction: column;
   gap: 12px;
   margin-bottom: 24px;
+}
+
+.filter-stack button {
+  width: 100%;
+  min-width: 0;
+}
+
+.closet-sidebar form {
+  width: 100%;
+  min-width: 0;
+}
+
+.closet-sidebar .field,
+.closet-sidebar select,
+.closet-sidebar input,
+.closet-sidebar button {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.closet-sidebar input[type="file"] {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 1100px) {
+  .closet-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .closet-sidebar {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .closet-grid {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+
+  .closet-card {
+    width: 100%;
+  }
 }
 
 /* Footer */
