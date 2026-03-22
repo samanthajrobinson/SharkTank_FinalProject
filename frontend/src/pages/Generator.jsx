@@ -201,7 +201,7 @@ export default function Generator() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, 380px)",
+                gridTemplateColumns: "repeat(auto-fit, 380px)",
                 justifyContent: "center",
                 gap: "20px",
               }}

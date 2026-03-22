@@ -68,8 +68,9 @@ export default function Home() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: "18px",
+              gridTemplateColumns: "repeat(auto-fit, 380px)",
+              justifyContent: "center",
+              gap: "20px",
             }}
           >
             <article

@@ -26,10 +26,9 @@ export default function Closet() {
     try {
       setErrorMessage("");
 
-      const res = await fetch(
-        `${API_BASE}/api/clothes`,
-        { headers: authHeaders() },
-      );
+      const res = await fetch(`${API_BASE}/api/clothes`, {
+        headers: authHeaders(),
+      });
 
       const data = await res.json();
 
@@ -79,14 +78,11 @@ export default function Closet() {
 
       data.append("image", form.image);
 
-      const res = await fetch(
-        `${API_BASE}/api/clothes`,
-        {
-          method: "POST",
-          headers: authHeaders(),
-          body: data,
-        },
-      );
+      const res = await fetch(`${API_BASE}/api/clothes`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: data,
+      });
 
       console.log("response arrived", res.status);
 
@@ -137,17 +133,14 @@ export default function Closet() {
     try {
       setErrorMessage("");
 
-      const res = await fetch(
-        `${API_BASE}/api/clothes/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            ...authHeaders(),
-          },
-          body: JSON.stringify(editForm),
+      const res = await fetch(`${API_BASE}/api/clothes/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...authHeaders(),
         },
-      );
+        body: JSON.stringify(editForm),
+      });
 
       const updatedItem = await res.json();
 
@@ -233,9 +226,9 @@ export default function Closet() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "250px 1fr",
-            gap: "28px",
-            alignItems: "start",
+            gridTemplateColumns: "repeat(auto-fit, 380px)",
+            justifyContent: "center",
+            gap: "20px",
           }}
         >
           <aside
@@ -410,7 +403,8 @@ export default function Closet() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, 380px)",
+                    justifyContent: "center",
                     gap: "20px",
                   }}
                 >
