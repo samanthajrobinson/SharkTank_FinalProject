@@ -339,12 +339,14 @@ input[type="file"] {
 /* Closet layout helpers */
 .closet-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 320px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
 
 .closet-sidebar {
+  width: 100%;
+  min-width: 0;
   background: #ffffff;
   border-radius: 24px;
   padding: 20px;
@@ -354,6 +356,7 @@ input[type="file"] {
 }
 
 .closet-panel {
+  min-width: 0;
   background: #ffffff;
   border-radius: 24px;
   padding: 20px;
