@@ -101,17 +101,6 @@ export default function SignUp() {
         <section className="section-card">
           <div
             style={{
-              marginBottom: "22px",
-              padding: "18px 20px",
-              borderRadius: "22px",
-              background: "#f4f1ed",
-              border: "1px solid #e6e0d9",
-            }}
-          >
-          </div>
-
-          <div
-            style={{
               display: "flex",
               gap: "10px",
               marginBottom: "22px",
