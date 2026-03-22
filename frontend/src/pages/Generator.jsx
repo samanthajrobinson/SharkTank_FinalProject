@@ -186,13 +186,6 @@ export default function Generator() {
 
         <section className="section-card">
           <div className="section-header">
-            <div>
-              <h2 className="section-title">Outfit Generator</h2>
-              <p className="section-subtext">
-                Generate three styled looks from your uploaded closet.
-              </p>
-            </div>
-
             <button className="primary-pill" onClick={generateMultipleOutfits}>
               Regenerate Looks
             </button>
