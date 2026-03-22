@@ -226,7 +226,8 @@ export default function Closet() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, 380px)",
+            gridTemplateColumns: "repeat(3, 380px)",
+            justifyContent: "center",
             justifyContent: "center",
             gap: "20px",
           }}

@@ -254,7 +254,10 @@ export default function Home() {
                 </div>
 
                 <video
-                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                   poster="/demo-poster.png"
                   style={{
                     display: "block",
@@ -264,8 +267,8 @@ export default function Home() {
                     boxShadow: "0 10px 24px rgba(0,0,0,0.18)",
                   }}
                 >
-                  <source src="/demo.mp4" type="video/mp4" /> Your browser does
-                  not support the video tag.
+                  <source src="/demo.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
                 </video>
               </div>
             </section>
